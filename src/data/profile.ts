@@ -10,8 +10,7 @@ export const profile = {
   email: "andyydz57@gmail.com",
   links: {
     github: "https://github.com/andyydz",
-    linkedin: "https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/
-".trim(),
+    linkedin: "https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/",
     tryhackme: "https://tryhackme.com/p/andyydz57",
     resume: "/resume.pdf",
   },
