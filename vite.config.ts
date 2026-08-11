@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    define: {
+      __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+    },
+  },
 });
