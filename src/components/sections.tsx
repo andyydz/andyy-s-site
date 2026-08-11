@@ -392,11 +392,15 @@ export function Contact() {
       <div className="grid gap-4 md:grid-cols-2">
         <ul className="panel reveal space-y-3 p-5 font-mono text-xs sm:text-sm">
           {[
-            ["email", `mailto:${profile.email}`, profile.email],
-            ["github", profile.links.github, "github.com/andyydz"],
-            ["linkedin", profile.links.linkedin, "linkedin.com/in/andrew-vinston-d-souza"],
-            ["tryhackme", profile.links.tryhackme, "tryhackme.com/p/andyydz57"],
-          ].map(([label, href, text], i) => (
+            { label: "email", href: `mailto:${profile.email}`, text: profile.email },
+            { label: "github", href: profile.links.github, text: "github.com/andyydz" },
+            {
+              label: "linkedin",
+              href: profile.links.linkedin,
+              text: "linkedin.com/in/andrew-vinston-d-souza",
+            },
+            { label: "tryhackme", href: profile.links.tryhackme, text: "tryhackme.com/p/andyydz57" },
+          ].map(({ label, href, text }, i) => (
             <li key={label} className="reveal" style={delay(i)}>
               <span className="text-muted-foreground">{label}:</span>{" "}
               <a
