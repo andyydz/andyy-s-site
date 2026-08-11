@@ -1,24 +1,102 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { IntroSequence } from "@/components/intro-sequence";
+import { SiteNav } from "@/components/site-nav";
+import { Hero } from "@/components/hero";
+import {
+  About,
+  Certifications,
+  Contact,
+  Experience,
+  LogStrip,
+  Projects,
+  Skills,
+  SiteFooter,
+  StatsBar,
+  Testimonial,
+  Volunteering,
+} from "@/components/sections";
+import { profile } from "@/data/profile";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const TITLE = "Andrew D'Souza — Aspiring SOC Analyst | Threat Detection & IR";
+const DESCRIPTION =
+  "Portfolio of Andrew Vinston D'Souza (Andyy), aspiring SOC Analyst focused on threat detection and incident response. Top 4% on TryHackMe — Splunk, Wireshark, MITRE ATT&CK.";
+
 export const Route = createFileRoute("/")({
   component: Index,
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "profile" },
+      { property: "og:url", content: "/" },
+      { property: "og:image", content: "/og-image.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/og-image.jpg" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: profile.name,
+          alternateName: profile.alias,
+          jobTitle: "Aspiring SOC Analyst",
+          email: `mailto:${profile.email}`,
+          description: DESCRIPTION,
+          alumniOf: "St. Aloysius University, Mangaluru",
+          sameAs: [profile.links.github, profile.links.linkedin, profile.links.tryhackme],
+        }),
+      },
+    ],
+  }),
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const STORAGE_KEY = "andyydz.intro.played";
+
 function Index() {
+  const [showIntro, setShowIntro] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (!window.localStorage.getItem(STORAGE_KEY)) setShowIntro(true);
+    } catch {
+      /* storage unavailable — skip intro */
+    }
+  }, []);
+
+  const finishIntro = () => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    setShowIntro(false);
+  };
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <div className="scanlines no-print" aria-hidden="true" />
+      {showIntro && <IntroSequence onDone={finishIntro} />}
+      <SiteNav />
+      <main>
+        <Hero />
+        <LogStrip />
+        <StatsBar />
+        <About />
+        <Skills />
+        <Projects />
+        <Certifications />
+        <Experience />
+        <Volunteering />
+        <Testimonial />
+        <Contact />
+      </main>
+      <SiteFooter />
+    </>
   );
 }
