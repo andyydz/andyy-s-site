@@ -78,7 +78,7 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
     <div
       role="dialog"
       aria-label="Intro animation"
-      className={`fixed inset-0 z-70 bg-background transition-opacity duration-400 ease-out ${
+      className={`fixed inset-0 z-[70] bg-background transition-opacity duration-300 ease-out ${
         leaving ? "opacity-0" : "opacity-100"
       }`}
     >

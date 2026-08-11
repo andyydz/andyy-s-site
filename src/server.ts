@@ -56,7 +56,7 @@ const SECURITY_HEADERS: Record<string, string> = {
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https:",
     "connect-src 'self' https://api.github.com",
-    "frame-ancestors 'self'",
+    
     "base-uri 'self'",
     "form-action 'self'",
   ].join("; "),
