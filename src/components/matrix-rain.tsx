@@ -69,15 +69,12 @@ export function MatrixRain({
       ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
       const progress = Math.min(1, (t - start) / rampMs);
       for (let i = 0; i < cols; i++) {
-        if (active[i] > progress) continue;
+        if ((active[i] ?? 1) > progress) continue;
         ctx.fillStyle = color;
-        ctx.fillText(
-          GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
-          i * fontSize,
-          drops[i] * fontSize,
-        );
-        drops[i] += 1;
-        if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+        const y = (drops[i] ?? 0) * fontSize;
+        ctx.fillText(GLYPHS[Math.floor(Math.random() * GLYPHS.length)] ?? "0", i * fontSize, y);
+        drops[i] = (drops[i] ?? 0) + 1;
+        if (y > h && Math.random() > 0.975) drops[i] = 0;
       }
     };
     raf = requestAnimationFrame(draw);
