@@ -41,15 +41,18 @@ function delay(i: number) {
 
 export function LogStrip() {
   const { data, loading } = useGitHubStats();
-  const lines = data?.events?.length ? [...data.events, profile.logLines[0]!] : profile.logLines;
+  const live = data?.events?.length
+    ? Array.from(new Set([...data.events, profile.logLines[0]!]))
+    : profile.logLines;
+  const lines = live.slice(0, 3);
 
   return (
     <div className="mx-auto max-w-6xl px-5">
       <div className="panel px-4 py-3 font-mono text-[11px] leading-relaxed text-muted-foreground sm:text-xs">
         <p className="mb-1 text-primary/70">$ tail -f /var/log/andyydz.log</p>
         {loading && <p className="text-muted-foreground">fetching activity…</p>}
-        {lines.slice(0, 3).map((l) => (
-          <p key={l}>
+        {lines.map((l, i) => (
+          <p key={`${i}-${l}`}>
             <span className="text-accent">{l.slice(0, 5)}</span>
             {l.slice(5)}
           </p>
