@@ -496,12 +496,6 @@ export function SiteFooter() {
         <p>
           © {updated.getFullYear()} {profile.name} · Aspiring SOC Analyst
         </p>
-        <p>
-          last updated:{" "}
-          <span className="text-primary">
-            {updated.toISOString().slice(0, 10)}
-          </span>
-        </p>
       </div>
     </footer>
   );

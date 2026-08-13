@@ -32,7 +32,13 @@ export function SiteNav() {
         className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3"
       >
         <a href="#top" className="flex items-center gap-2 font-mono text-sm text-foreground">
-          <img src={skull} alt="" width={30} height={30} className="h-[30px] w-[30px]" />
+          <img
+            src={skull}
+            alt=""
+            width={30}
+            height={30}
+            className="h-[30px] w-[30px] rounded-full border border-border object-cover"
+          />
           <span>
             andyy<span className="text-primary">dz</span>
           </span>
