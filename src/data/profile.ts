@@ -159,7 +159,7 @@ export const profile = {
   testimonial: {
     quote:
       "I've had the pleasure of teaching Andrew during his BCA program at St. Aloysius. He consistently stood out — not just academically, but for his proactive approach to learning and technology, and his strong problem-solving skills in inter-college hackathons. He collaborates effectively under pressure and thinks on his feet. I highly recommend him for any technical roles or projects he pursues.",
-    author: "[Full name pending]",
+    author: "Rishal Noronha",
     role: "Assistant Professor, St. Aloysius (Deemed to be University), Mangaluru",
     placeholder: false,
   },
