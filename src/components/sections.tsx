@@ -169,43 +169,49 @@ export function About() {
 /* ---------- skills ---------- */
 
 export function Skills() {
-  const [open, setOpen] = useState<string | null>(profile.skillGroups[0]?.name ?? null);
+  const [expanded, setExpanded] = useState(false);
   return (
     <Section id="skills" heading="ls skills/">
       <div className="space-y-3">
-        {profile.skillGroups.map((group, gi) => {
-          const isOpen = open === group.name;
-          return (
-            <div key={group.name} className="panel reveal" style={delay(gi)}>
-              <button
-                type="button"
-                aria-expanded={isOpen}
-                onClick={() => setOpen(isOpen ? null : group.name)}
-                className="flex w-full items-center justify-between px-4 py-3 font-mono text-xs text-primary sm:text-sm"
-              >
-                <span>
-                  &gt; expand: {group.name}{" "}
-                  <span className="text-muted-foreground">[{group.items.length}]</span>
-                </span>
-                <span className="text-muted-foreground">{isOpen ? "−" : "+"}</span>
-              </button>
-              {isOpen && (
-                <ul className="flex flex-wrap gap-2 border-t border-border px-4 py-4">
-                  {group.items.map((item, i) => (
-                    <li
-                      key={item}
-                      className="reveal is-visible border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
-                      style={delay(i)}
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          );
-        })}
+        {profile.skillGroups.map((group, gi) => (
+          <div key={group.name} className="panel reveal" style={delay(gi)}>
+            <button
+              type="button"
+              aria-expanded={expanded}
+              onClick={() => setExpanded(!expanded)}
+              className="flex w-full items-center justify-between px-4 py-3 font-mono text-xs text-primary sm:text-sm"
+            >
+              <span>
+                &gt; expand: {group.name}{" "}
+                <span className="text-muted-foreground">[{group.items.length}]</span>
+              </span>
+              <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
+            </button>
+            {expanded && (
+              <ul className="flex flex-wrap gap-2 border-t border-border px-4 py-4">
+                {group.items.map((item, i) => (
+                  <li
+                    key={item}
+                    className="reveal is-visible border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                    style={delay(i)}
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
       </div>
+      <button
+        type="button"
+        onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+        className="reveal mt-5 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-150 hover:border-border-strong hover:text-foreground"
+      >
+        <span>{expanded ? "> collapse" : "> read more"}</span>
+        <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
+      </button>
     </Section>
   );
 }
