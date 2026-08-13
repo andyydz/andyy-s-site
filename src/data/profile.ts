@@ -155,13 +155,13 @@ export const profile = {
     },
   ],
 
-  // TODO: replace with a real LinkedIn recommendation quote once permission is confirmed.
+  // TODO: fill in the professor's full name.
   testimonial: {
     quote:
-      "Andrew is methodical and genuinely curious — he digs into the why behind an alert instead of stopping at the fix.",
-    author: "Placeholder — pending permission",
-    role: "LinkedIn recommendation",
-    placeholder: true,
+      "I've had the pleasure of teaching Andrew during his BCA program at St. Aloysius. He consistently stood out — not just academically, but for his proactive approach to learning and technology, and his strong problem-solving skills in inter-college hackathons. He collaborates effectively under pressure and thinks on his feet. I highly recommend him for any technical roles or projects he pursues.",
+    author: "[Full name pending]",
+    role: "Assistant Professor, St. Aloysius (Deemed to be University), Mangaluru",
+    placeholder: false,
   },
 };
 
