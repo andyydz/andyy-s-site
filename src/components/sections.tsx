@@ -205,8 +205,12 @@ export function Skills() {
                 {group.items.map((item, i) => (
                   <li
                     key={item}
-                    className="reveal is-visible border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
-                    style={delay(i)}
+                    className="animate-fade-in border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                    style={{
+                      animationDelay: `${i * 60}ms`,
+                      animationFillMode: "backwards",
+                      animationDuration: "260ms",
+                    }}
                   >
                     {item}
                   </li>

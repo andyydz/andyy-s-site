@@ -87,8 +87,8 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
       <div className="relative flex h-full w-full flex-col items-center justify-center px-6 text-center">
         {phase === 0 && (
           <ul className="font-mono text-sm text-primary sm:text-base">
-            {BOOT.slice(0, bootIndex).map((line) => (
-              <li key={line} className="animate-fade-in">
+            {BOOT.slice(0, bootIndex).map((line, i) => (
+              <li key={line} className={`animate-fade-in ${i === bootIndex - 1 ? "caret" : ""}`}>
                 <span className="text-primary/60">&gt; </span>
                 {line}
               </li>
