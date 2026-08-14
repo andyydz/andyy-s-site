@@ -41,10 +41,12 @@ function delay(i: number) {
 
 export function LogStrip() {
   const { data, loading } = useGitHubStats();
+  const [expanded, setExpanded] = useState(false);
+
   const live = data?.events?.length
-    ? Array.from(new Set([...data.events, profile.logLines[0]!]))
+    ? Array.from(new Set([...data.events, ...profile.logLines]))
     : profile.logLines;
-  const lines = live.slice(0, 3);
+  const lines = expanded ? live : live.slice(0, 3);
 
   return (
     <div className="mx-auto max-w-6xl px-5">
@@ -58,6 +60,17 @@ export function LogStrip() {
           </p>
         ))}
       </div>
+      {live.length > 3 && (
+        <button
+          type="button"
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          className="mt-3 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-150 hover:border-border-strong hover:text-foreground"
+        >
+          <span>{expanded ? "> collapse" : "> read more"}</span>
+          <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
+        </button>
+      )}
     </div>
   );
 }
