@@ -446,8 +446,8 @@ export function Contact() {
             },
             { label: "tryhackme", href: profile.links.tryhackme, text: "tryhackme.com/p/andyydz57" },
           ].map(({ label, href, text }, i) => (
-            <li key={label} className="reveal" style={delay(i)}>
-              <span className="text-muted-foreground">{label}:</span>{" "}
+            <li key={label} className="reveal flex flex-wrap items-center gap-2" style={delay(i)}>
+              <span className="text-muted-foreground">{label}:</span>
               <a
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
@@ -456,7 +456,31 @@ export function Contact() {
               >
                 {text}
               </a>
+              {label === "email" && (
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  aria-label="Copy email address"
+                  title="Copy email address"
+                  className="no-print inline-flex items-center gap-1 border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                >
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <rect x="9" y="9" width="12" height="12" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  <span aria-live="polite">{copied ? "copied" : "copy"}</span>
+                </button>
+              )}
             </li>
+
           ))}
         </ul>
 
