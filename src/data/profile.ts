@@ -108,14 +108,33 @@ export const profile = {
     next: "Add analyst-facing reporting queries and export incident timelines mapped to MITRE ATT&CK techniques.",
   },
 
-  projects: [
+  featuredProjects: [
+    {
+      name: "Security Incident & Asset Tracker",
+      repo: "https://github.com/andyydz/security-incident-asset-tracker",
+      problem:
+        "Small IT teams often track assets in spreadsheets and log incidents in chat, so nothing links a compromised host to the incident history behind it.",
+      approach:
+        "Built a Java + JDBC console application on MariaDB with a relational schema linking Assets↔Incidents, a DAO layer for data access, and PreparedStatement used throughout to prevent SQL injection.",
+      outcome:
+        "Assets and incidents are queryable together, with severity classification on every incident. Built and tested end to end on Kali Linux.",
+      next: "Add analyst-facing reporting queries and export incident timelines mapped to MITRE ATT&CK techniques.",
+    },
     {
       name: "SOC-Portfolio",
       repo: "https://github.com/andyydz/SOC-Portfolio",
-      description:
-        "Hands-on SOC projects covering Splunk, Wazuh, ELK Stack, Windows Event Logs, MITRE ATT&CK, and Blue Team investigations.",
-      tags: ["Splunk", "Wazuh", "ELK", "MITRE ATT&CK"],
+      problem:
+        "Blue Team learning is easy to collect and hard to prove — labs get completed and forgotten, with no evidence of how a detection was reached.",
+      approach:
+        "Built a repo of end-to-end SOC investigations: Splunk and ELK queries over Windows Event Logs, Wazuh alert triage, and packet captures, each documented as alert → pivot → evidence → verdict and mapped to MITRE ATT&CK techniques.",
+      outcome:
+        "A reviewable body of investigations covering phishing analysis, brute-force and persistence detection, and log-source coverage gaps — reproducible by anyone reading the writeups.",
+      next: "Add detection rules as reusable Sigma signatures and cover cloud/identity log sources alongside endpoint telemetry.",
     },
+  ],
+
+  projects: [
+
     {
       name: "Cybersecurity-Writeups",
       repo: "https://github.com/andyydz/Cybersecurity-Writeups",
