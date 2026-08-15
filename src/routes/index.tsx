@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { IntroSequence } from "@/components/intro-sequence";
 import { SiteNav } from "@/components/site-nav";
 import { Hero } from "@/components/hero";
+import { MotionDebug } from "@/components/motion-debug";
 import {
   About,
   Certifications,
@@ -97,6 +98,7 @@ function Index() {
         <Contact />
       </main>
       <SiteFooter />
+      <MotionDebug />
     </>
   );
 }

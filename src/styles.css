@@ -215,7 +215,27 @@
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
+}
+
+/* Mirror of the block above, forced by the motion debug overlay's
+   [simulate reduced-motion] toggle so the assertions can be verified
+   without changing OS settings. */
+.force-reduced-motion {
+  scroll-behavior: auto;
+}
+.force-reduced-motion .reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.force-reduced-motion *,
+.force-reduced-motion *::before,
+.force-reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
 }
 
 /* ---------- print ---------- */
