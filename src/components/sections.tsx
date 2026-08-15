@@ -236,32 +236,39 @@ export function Skills() {
 /* ---------- projects ---------- */
 
 export function Projects() {
-  const f = profile.featuredProject;
   return (
     <Section id="projects" heading="ls projects/">
-      <article className="panel shimmer-border reveal p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong">
-        <p className="font-mono text-[10px] tracking-[0.2em] text-accent">FEATURED CASE STUDY</p>
-        <h3 className="mt-2 font-mono text-base text-primary sm:text-lg">
-          <a href={f.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
-            {f.name}
-          </a>
-        </h3>
-        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
-          {[
-            ["problem", f.problem],
-            ["approach", f.approach],
-            ["outcome", f.outcome],
-            ["what's next", f.next],
-          ].map(([k, v], i) => (
-            <div key={k} className="reveal" style={delay(i)}>
-              <dt className="font-mono text-[11px] text-accent">&gt; {k}</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{v}</dd>
-            </div>
-          ))}
-        </dl>
-      </article>
+      <div className="grid gap-4">
+        {profile.featuredProjects.map((f) => (
+          <article
+            key={f.name}
+            className="panel shimmer-border reveal p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+          >
+            <p className="font-mono text-[10px] tracking-[0.2em] text-accent">FEATURED CASE STUDY</p>
+            <h3 className="mt-2 font-mono text-base text-primary sm:text-lg">
+              <a href={f.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
+                {f.name}
+              </a>
+            </h3>
+            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+              {[
+                ["problem", f.problem],
+                ["approach", f.approach],
+                ["outcome", f.outcome],
+                ["what's next", f.next],
+              ].map(([k, v], i) => (
+                <div key={k} className="reveal" style={delay(i)}>
+                  <dt className="font-mono text-[11px] text-accent">&gt; {k}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))}
+      </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-3">
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+
         {profile.projects.map((p, i) => (
           <article
             key={p.name}
@@ -389,6 +396,18 @@ export function Testimonial() {
 export function Contact() {
   const [errors, setErrors] = useState<string[]>([]);
   const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -427,8 +446,8 @@ export function Contact() {
             },
             { label: "tryhackme", href: profile.links.tryhackme, text: "tryhackme.com/p/andyydz57" },
           ].map(({ label, href, text }, i) => (
-            <li key={label} className="reveal" style={delay(i)}>
-              <span className="text-muted-foreground">{label}:</span>{" "}
+            <li key={label} className="reveal flex flex-wrap items-center gap-2" style={delay(i)}>
+              <span className="text-muted-foreground">{label}:</span>
               <a
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
@@ -437,7 +456,31 @@ export function Contact() {
               >
                 {text}
               </a>
+              {label === "email" && (
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  aria-label="Copy email address"
+                  title="Copy email address"
+                  className="no-print inline-flex items-center gap-1 border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                >
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <rect x="9" y="9" width="12" height="12" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  <span aria-live="polite">{copied ? "copied" : "copy"}</span>
+                </button>
+              )}
             </li>
+
           ))}
         </ul>
 
