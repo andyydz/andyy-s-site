@@ -396,6 +396,18 @@ export function Testimonial() {
 export function Contact() {
   const [errors, setErrors] = useState<string[]>([]);
   const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
