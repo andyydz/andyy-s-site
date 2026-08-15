@@ -25,24 +25,15 @@ export const profile = {
   ],
 
   // Fallback log lines; live GitHub events are prepended when available.
+  // Keep this short — recent, real events only. Skills live in the Skills section.
   logLines: [
     "[LOG] Completed: Greenholt v2 — phishing investigation",
     "[LOG] Pushed 3 commits to SOC-Portfolio",
+    "[LOG] Earned: Cyber Security 101 Certificate (TryHackMe)",
     "[LOG] TryHackMe SOC Level 1 path — in progress",
-    "[LOG] Skill mapped: Governance and Regulation",
-    "[LOG] Skill mapped: Phishing Prevention",
-    "[LOG] Skill mapped: Phishing Analytics Tools",
-    "[LOG] Skill mapped: MITRE ATT&CK",
-    "[LOG] Skill mapped: REMnux",
-    "[LOG] Skill mapped: Splunk",
-    "[LOG] Skill mapped: Elastic Stack",
-    "[LOG] Skill mapped: OWASP Top 10 2025",
-    "[LOG] Skill mapped: Metasploit",
-    "[LOG] Skill mapped: Incident Response",
-    "[LOG] Skill mapped: Wireshark",
-    "[LOG] Skill mapped: Linux",
-    "[LOG] Skill mapped: Virtualization",
+    "[LOG] 61-day streak maintained on TryHackMe",
   ],
+
 
   notableRooms: [
     "Nmap",
