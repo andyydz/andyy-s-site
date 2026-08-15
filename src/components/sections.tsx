@@ -236,30 +236,37 @@ export function Skills() {
 /* ---------- projects ---------- */
 
 export function Projects() {
-  const f = profile.featuredProject;
   return (
     <Section id="projects" heading="ls projects/">
-      <article className="panel shimmer-border reveal p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong">
-        <p className="font-mono text-[10px] tracking-[0.2em] text-accent">FEATURED CASE STUDY</p>
-        <h3 className="mt-2 font-mono text-base text-primary sm:text-lg">
-          <a href={f.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
-            {f.name}
-          </a>
-        </h3>
-        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
-          {[
-            ["problem", f.problem],
-            ["approach", f.approach],
-            ["outcome", f.outcome],
-            ["what's next", f.next],
-          ].map(([k, v], i) => (
-            <div key={k} className="reveal" style={delay(i)}>
-              <dt className="font-mono text-[11px] text-accent">&gt; {k}</dt>
-              <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{v}</dd>
-            </div>
-          ))}
-        </dl>
-      </article>
+      <div className="grid gap-4">
+        {profile.featuredProjects.map((f) => (
+          <article
+            key={f.name}
+            className="panel shimmer-border reveal p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+          >
+            <p className="font-mono text-[10px] tracking-[0.2em] text-accent">FEATURED CASE STUDY</p>
+            <h3 className="mt-2 font-mono text-base text-primary sm:text-lg">
+              <a href={f.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
+                {f.name}
+              </a>
+            </h3>
+            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+              {[
+                ["problem", f.problem],
+                ["approach", f.approach],
+                ["outcome", f.outcome],
+                ["what's next", f.next],
+              ].map(([k, v], i) => (
+                <div key={k} className="reveal" style={delay(i)}>
+                  <dt className="font-mono text-[11px] text-accent">&gt; {k}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))}
+      </div>
+
 
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         {profile.projects.map((p, i) => (
