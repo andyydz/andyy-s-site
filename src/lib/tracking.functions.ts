@@ -32,19 +32,27 @@ function referrerHost(referrer: string | undefined): string | null {
   }
 }
 
-async function countSince(
-  table: "page_views" | "contact_submissions",
-  column: "visitor_hash" | "sender_hash",
-  hash: string,
-  minutes: number,
-) {
+function windowStart(minutes: number) {
+  return new Date(Date.now() - minutes * 60_000).toISOString();
+}
+
+async function countViewsSince(hash: string, minutes: number) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const since = new Date(Date.now() - minutes * 60_000).toISOString();
   const { count } = await supabaseAdmin
-    .from(table)
+    .from("page_views")
     .select("id", { count: "exact", head: true })
-    .eq(column, hash)
-    .gte("created_at", since);
+    .eq("visitor_hash", hash)
+    .gte("created_at", windowStart(minutes));
+  return count ?? 0;
+}
+
+async function countSubmissionsSince(hash: string, minutes: number) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { count } = await supabaseAdmin
+    .from("contact_submissions")
+    .select("id", { count: "exact", head: true })
+    .eq("sender_hash", hash)
+    .gte("created_at", windowStart(minutes));
   return count ?? 0;
 }
 
