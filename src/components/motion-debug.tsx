@@ -138,8 +138,15 @@ function auditReducedMotion(simulated: boolean): Check[] {
   const canvases = document.querySelectorAll("canvas");
   checks.push({
     name: "matrix rain canvas removed",
-    pass: canvases.length === 0,
-    detail: canvases.length === 0 ? "0 canvases mounted" : `${canvases.length} canvas node(s)`,
+    // JS reads the real media query at mount, so the CSS-only simulation
+    // cannot unmount the canvas — informational in that mode.
+    pass: canvases.length === 0 || simulated,
+    detail:
+      canvases.length === 0
+        ? "0 canvases mounted"
+        : simulated
+          ? `${canvases.length} canvas node(s) — n/a under CSS simulation, use the OS setting`
+          : `${canvases.length} canvas node(s)`,
   });
   return checks;
 }
