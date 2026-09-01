@@ -153,9 +153,8 @@ export function StatsBar() {
         {error && <span>live stats unavailable</span>}
         {data && (
           <span>
-            · public repos: <span className="text-accent">{data.repos}</span> · recent commits:{" "}
-            <span className="text-accent">{data.contributions ?? "—"}</span> · followers:{" "}
-            <span className="text-accent">{data.followers}</span>
+            · public repos: <span className="text-accent">{data.repos}</span> · contributions (last
+            year): <span className="text-accent">{data.contributions?.toLocaleString() ?? "—"}</span>
           </span>
         )}
       </div>
