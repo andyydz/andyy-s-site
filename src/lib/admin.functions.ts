@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { profile } from "@/data/profile";
 
 export type AdminOverview = {
   totals: { views: number; views7d: number; views30d: number; submissions: number };
@@ -27,10 +28,16 @@ function tally<T extends string>(keys: T[]) {
   return [...map.entries()].map(([key, count]) => ({ key, count }));
 }
 
-/** Any signed-in user with no admin present yet becomes the admin (first-run bootstrap). */
+/** First-run bootstrap is restricted to the portfolio owner's verified email. */
 export const claimAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    const claimEmail = typeof context.claims.email === "string" ? context.claims.email : "";
+    const emailVerified = context.claims.email_verified === true;
+    if (claimEmail.toLowerCase() !== profile.email.toLowerCase() || !emailVerified) {
+      console.warn("[admin] role bootstrap denied");
+      return { granted: false };
+    }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { count } = await supabaseAdmin
       .from("user_roles")

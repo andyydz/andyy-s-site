@@ -1,5 +1,6 @@
 import { MatrixRain } from "@/components/matrix-rain";
 import { profile } from "@/data/profile";
+import { trackClick } from "@/lib/track";
 import headshot from "@/assets/headshot.jpg";
 import { useReveal } from "@/hooks/use-reveal";
 
@@ -26,13 +27,15 @@ export function Hero() {
           <div className="no-print mt-7 flex flex-wrap gap-3 font-mono text-xs sm:text-sm">
             <a
               href={profile.links.resume}
-              className="border border-primary bg-primary px-4 py-2 text-primary-foreground transition-transform duration-150 hover:-translate-y-0.5"
+              onClick={() => trackClick("resume")}
+              className="min-h-11 border border-primary bg-primary px-4 py-2 text-primary-foreground transition-transform duration-150 hover:-translate-y-0.5"
             >
               Download Resume
             </a>
             <a
               href="#contact"
-              className="border border-border-strong px-4 py-2 text-primary transition-colors duration-150 hover:bg-primary hover:text-primary-foreground"
+              onClick={() => trackClick("contact")}
+              className="min-h-11 border border-border-strong px-4 py-2 text-primary transition-colors duration-150 hover:bg-primary hover:text-primary-foreground"
             >
               Contact
             </a>
@@ -40,7 +43,8 @@ export function Hero() {
               href={profile.links.github}
               target="_blank"
               rel="noreferrer noopener"
-              className="border border-border px-4 py-2 text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+              onClick={() => trackClick("github")}
+              className="min-h-11 border border-border px-4 py-2 text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
             >
               GitHub
             </a>
@@ -48,7 +52,8 @@ export function Hero() {
               href={profile.links.linkedin}
               target="_blank"
               rel="noreferrer noopener"
-              className="border border-border px-4 py-2 text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+              onClick={() => trackClick("linkedin")}
+              className="min-h-11 border border-border px-4 py-2 text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
             >
               LinkedIn
             </a>
