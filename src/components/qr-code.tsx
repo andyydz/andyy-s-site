@@ -32,7 +32,13 @@ export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
     <figure className="flex items-center gap-3">
       <div className="border border-border p-1">
         {src ? (
-          <img src={src} alt={`QR code linking to ${url}`} width={88} height={88} className="h-22 w-22 block h-[88px] w-[88px]" />
+          <img
+            src={src}
+            alt={`QR code linking to ${url}`}
+            width={88}
+            height={88}
+            className="block h-[88px] w-[88px]"
+          />
         ) : (
           <div className="h-[88px] w-[88px] bg-background" aria-hidden="true" />
         )}
