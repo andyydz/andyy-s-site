@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { profile } from "@/data/profile";
+import { submitContact } from "@/lib/tracking.functions";
+import { trackClick } from "@/lib/track";
+import { SiteQrCode } from "@/components/qr-code";
 import { useGitHubStats } from "@/hooks/use-github-stats";
 import { usePrefersReducedMotion, useReveal } from "@/hooks/use-reveal";
 import skull from "@/assets/skull.png";
@@ -395,7 +399,9 @@ export function Testimonial() {
 export function Contact() {
   const [errors, setErrors] = useState<string[]>([]);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
+  const send = useServerFn(submitContact);
 
   const copyEmail = async () => {
     try {
@@ -407,28 +413,35 @@ export function Contact() {
     }
   };
 
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const honey = String(fd.get("company_url") ?? "");
     const name = String(fd.get("name") ?? "").trim();
     const email = String(fd.get("email") ?? "").trim();
     const message = String(fd.get("message") ?? "").trim();
 
     const errs: string[] = [];
-    if (honey) errs.push("submission rejected");
     if (name.length < 2 || name.length > 80) errs.push("name must be 2–80 characters");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
       errs.push("valid email required");
     if (message.length < 10 || message.length > 1000) errs.push("message must be 10–1000 characters");
     setErrors(errs);
+    setSent(false);
     if (errs.length) return;
 
-    const subject = encodeURIComponent(`Portfolio contact — ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
-    setSent(true);
+    setSending(true);
+    try {
+      await send({ data: { name, email, message, company_url: honey } });
+      setSent(true);
+      form.reset();
+      void trackClick("contact-form-submit");
+    } catch (err) {
+      setErrors([err instanceof Error ? err.message : "could not send message"]);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -444,6 +457,7 @@ export function Contact() {
               text: "linkedin.com/in/andrew-vinston-d-souza",
             },
             { label: "tryhackme", href: profile.links.tryhackme, text: "tryhackme.com/p/andyydz57" },
+            { label: "reddit", href: profile.links.reddit, text: "reddit.com/user/RavenGhost6767" },
           ].map(({ label, href, text }, i) => (
             <li key={label} className="reveal flex flex-wrap items-center gap-2" style={delay(i)}>
               <span className="text-muted-foreground">{label}:</span>

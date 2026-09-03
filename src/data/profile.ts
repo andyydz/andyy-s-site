@@ -12,6 +12,7 @@ export const profile = {
     github: "https://github.com/andyydz",
     linkedin: "https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/",
     tryhackme: "https://tryhackme.com/p/andyydz57",
+    reddit: "https://www.reddit.com/user/RavenGhost6767/",
     resume: "/resume.pdf",
   },
   about: `Curious about how systems work since I was a kid — that curiosity pointed itself at cybersecurity, specifically defense. I care about understanding why something breaks, not just patching it and moving on. Most days I'm in TryHackMe's SOC and Blue Team paths — log analysis, incident response sims, Splunk, Wireshark, Nmap — mapping attack behavior to MITRE ATT&CK and writing it up on GitHub as I go. Top 4% globally on TryHackMe, 116 rooms completed, 61-day streak. Looking for an internship or entry-level SOC Analyst role.`,

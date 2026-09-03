@@ -69,7 +69,7 @@ export const logPageView = createServerFn({ method: "POST" })
     try {
       const hash = await visitorHash();
       // Rate limit: at most 30 logged views per visitor per hour.
-      if ((await countSince("page_views", "visitor_hash", hash, 60)) >= 30) {
+      if ((await countViewsSince(hash, 60)) >= 30) {
         return { ok: true, throttled: true };
       }
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -112,7 +112,7 @@ export const submitContact = createServerFn({ method: "POST" })
     if (data.company_url) return { ok: true as const };
 
     const hash = await visitorHash();
-    if ((await countSince("contact_submissions", "sender_hash", hash, 60)) >= 3) {
+    if ((await countSubmissionsSince(hash, 60)) >= 3) {
       throw new Error("Too many messages sent from this connection. Please try again later.");
     }
 

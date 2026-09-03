@@ -1,0 +1,12 @@
+CREATE SCHEMA IF NOT EXISTS private;
+ALTER FUNCTION public.has_role(uuid, public.app_role) SET SCHEMA private;
+GRANT USAGE ON SCHEMA private TO authenticated;
+GRANT EXECUTE ON FUNCTION private.has_role(uuid, public.app_role) TO authenticated;
+REVOKE ALL ON FUNCTION private.has_role(uuid, public.app_role) FROM PUBLIC;
+REVOKE ALL ON FUNCTION private.has_role(uuid, public.app_role) FROM anon;
+DROP POLICY IF EXISTS "admins read page views" ON public.page_views;
+CREATE POLICY "admins read page views" ON public.page_views FOR SELECT TO authenticated USING (private.has_role(auth.uid(), 'admin'::public.app_role));
+DROP POLICY IF EXISTS "admins read link clicks" ON public.link_clicks;
+CREATE POLICY "admins read link clicks" ON public.link_clicks FOR SELECT TO authenticated USING (private.has_role(auth.uid(), 'admin'::public.app_role));
+DROP POLICY IF EXISTS "admins read contact submissions" ON public.contact_submissions;
+CREATE POLICY "admins read contact submissions" ON public.contact_submissions FOR SELECT TO authenticated USING (private.has_role(auth.uid(), 'admin'::public.app_role));
