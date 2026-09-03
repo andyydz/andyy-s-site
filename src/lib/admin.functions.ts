@@ -62,11 +62,13 @@ export const isAdmin = createServerFn({ method: "GET" })
 export const getAdminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<AdminOverview> => {
-    const { data: allowed } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
-    if (allowed !== true) {
+    const { data: allowed } = await context.supabase
+      .from("user_roles")
+      .select("id")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!allowed) {
       console.warn("[admin] access denied for a signed-in account");
       throw new Error("Forbidden");
     }
