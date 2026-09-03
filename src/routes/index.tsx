@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { IntroSequence } from "@/components/intro-sequence";
+import { trackPageView } from "@/lib/track";
 import { SiteNav } from "@/components/site-nav";
 import { Hero } from "@/components/hero";
 import { MotionDebug } from "@/components/motion-debug";
@@ -68,6 +69,10 @@ function Index() {
     } catch {
       /* storage unavailable — skip intro */
     }
+  }, []);
+
+  useEffect(() => {
+    trackPageView(window.location.pathname);
   }, []);
 
   const finishIntro = () => {
