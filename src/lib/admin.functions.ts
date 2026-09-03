@@ -50,11 +50,13 @@ export const claimAdmin = createServerFn({ method: "POST" })
 export const isAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data } = await context.supabase.rpc("has_role", {
-      _user_id: context.userId,
-      _role: "admin",
-    });
-    return { admin: data === true };
+    const { data } = await context.supabase
+      .from("user_roles")
+      .select("id")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    return { admin: Boolean(data) };
   });
 
 export const getAdminOverview = createServerFn({ method: "GET" })
