@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { profile } from "@/data/profile";
+import { submitContact } from "@/lib/tracking.functions";
+import { trackClick } from "@/lib/track";
 import { useGitHubStats } from "@/hooks/use-github-stats";
 import { usePrefersReducedMotion, useReveal } from "@/hooks/use-reveal";
 import skull from "@/assets/skull.png";
