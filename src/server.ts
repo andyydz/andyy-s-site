@@ -44,27 +44,44 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
-const SECURITY_HEADERS: Record<string, string> = {
-  "X-Content-Type-Options": "nosniff",
-  "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-  "X-Frame-Options": "DENY",
-  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-  "Content-Security-Policy": [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com data:",
-    "img-src 'self' data: blob: https:",
-    `connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de https://www.linkedin.com ${BACKEND_ORIGIN}`,
-    "base-uri 'self'",
-    "form-action 'self' https://www.linkedin.com",
-  ].join("; "),
-};
+function backendOrigin(): string {
+  const raw =
+    process.env['SUPABASE_URL'] ??
+    process.env['VITE_SUPABASE_URL'] ??
+    "";
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return "";
+  }
+}
+
+function securityHeaders(): Record<string, string> {
+  const backend = backendOrigin();
+  return {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+    "X-Frame-Options": "DENY",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+    "Content-Security-Policy": [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "img-src 'self' data: blob: https:",
+      ["connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de https://www.linkedin.com", backend]
+        .filter(Boolean)
+        .join(" "),
+      "base-uri 'self'",
+      "form-action 'self' https://www.linkedin.com",
+    ].join("; "),
+  };
+}
 
 function withSecurityHeaders(response: Response): Response {
   const headers = new Headers(response.headers);
-  for (const [key, value] of Object.entries(SECURITY_HEADERS)) headers.set(key, value);
+  for (const [key, value] of Object.entries(securityHeaders())) headers.set(key, value);
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
