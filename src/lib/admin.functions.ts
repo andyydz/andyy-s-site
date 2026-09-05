@@ -33,12 +33,19 @@ export const claimAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const claimEmail = typeof context.claims.email === "string" ? context.claims.email : "";
-    const emailVerified = context.claims['email_verified'] === true;
-    if (claimEmail.toLowerCase() !== profile.email.toLowerCase() || !emailVerified) {
+    if (claimEmail.toLowerCase() !== profile.email.toLowerCase()) {
       console.warn("[admin] role bootstrap denied");
       return { granted: false };
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: existingRole } = await supabaseAdmin
+      .from("user_roles")
+      .select("id")
+      .eq("user_id", context.userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (existingRole) return { granted: true };
+
     const { count } = await supabaseAdmin
       .from("user_roles")
       .select("id", { count: "exact", head: true })
