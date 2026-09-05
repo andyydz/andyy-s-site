@@ -56,7 +56,7 @@ const SECURITY_HEADERS: Record<string, string> = {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https:",
-    "connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de https://www.linkedin.com https://*.supabase.co",
+    `connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de https://www.linkedin.com ${BACKEND_ORIGIN}`,
     "base-uri 'self'",
     "form-action 'self' https://www.linkedin.com",
   ].join("; "),
