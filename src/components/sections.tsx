@@ -571,10 +571,33 @@ export function SiteFooter() {
         height={512}
         className="pointer-events-none absolute -right-6 -bottom-10 h-44 w-44 opacity-[0.05]"
       />
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-2 px-5 py-8 font-mono text-[11px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>
-          © {updated.getFullYear()} {profile.name} · Aspiring SOC Analyst
-        </p>
+      <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 font-mono text-[11px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-3">
+          <p>
+            © {updated.getFullYear()} {profile.name} · Aspiring SOC Analyst
+          </p>
+          <ul className="flex flex-wrap gap-x-4 gap-y-1">
+            {[
+              { label: "github", href: profile.links.github },
+              { label: "linkedin", href: profile.links.linkedin },
+              { label: "tryhackme", href: profile.links.tryhackme },
+              { label: "reddit", href: profile.links.reddit },
+            ].map((l) => (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  onClick={() => trackClick(`footer-${l.label}`)}
+                  className="nav-link inline-flex min-h-11 items-center text-muted-foreground hover:text-primary"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <SiteQrCode fallbackUrl="https://andyydz.lovable.app/" />
       </div>
     </footer>
   );
