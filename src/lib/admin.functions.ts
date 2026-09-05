@@ -33,7 +33,7 @@ export const claimAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const claimEmail = typeof context.claims.email === "string" ? context.claims.email : "";
-    const emailVerified = context.claims.email_verified === true;
+    const emailVerified = context.claims['email_verified'] === true;
     if (claimEmail.toLowerCase() !== profile.email.toLowerCase() || !emailVerified) {
       console.warn("[admin] role bootstrap denied");
       return { granted: false };
