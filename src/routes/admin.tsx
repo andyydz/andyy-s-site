@@ -125,13 +125,13 @@ function AdminPage() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (session) void claim({}).catch(() => undefined);
-  }, [session, claim]);
-
   const query = useQuery({
     queryKey: ["admin-overview", session?.user.id],
-    queryFn: () => overview({}),
+    queryFn: async () => {
+      const access = await claim({});
+      if (!access.granted) throw new Error("Forbidden");
+      return overview({});
+    },
     enabled: Boolean(session),
     retry: false,
   });
