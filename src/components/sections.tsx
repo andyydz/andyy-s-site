@@ -464,7 +464,7 @@ export function Contact() {
               <a
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
-                rel="noreferrer noopener"
+                rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                 className="nav-link text-primary break-all"
               >
                 {text}
@@ -587,8 +587,8 @@ export function SiteFooter() {
                 <a
                   href={l.href}
                   target="_blank"
-                  rel="noreferrer noopener"
-                  onClick={() => trackClick(`footer-${l.label}`)}
+                  rel="noopener noreferrer"
+                  onClick={l.label === "linkedin" ? undefined : () => trackClick(`footer-${l.label}`)}
                   className="nav-link inline-flex min-h-11 items-center text-muted-foreground hover:text-primary"
                 >
                   {l.label}
