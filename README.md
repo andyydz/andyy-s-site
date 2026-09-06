@@ -7,6 +7,7 @@ Build/update my personal cybersecurity portfolio website for a SOC Analyst
 hacker aesthetic that stays professional, never gimmicky.
 
 ## DESIGN LANGUAGE
+
 - Palette: near-black background (#070907), phosphor green (#33ff66) and
   amber (#ffb000) as accents, red (#ff2b3f) reserved only for the intro
   name reveal.
@@ -20,6 +21,7 @@ hacker aesthetic that stays professional, never gimmicky.
   prefers-reduced-motion.
 
 ## INTRO SEQUENCE (plays once per session, fully skippable)
+
 1. Terminal boot lines typing in one at a time: "INITIALIZING SYSTEM",
    "LOADING SECURITY PROFILE", "VERIFYING CREDENTIALS... OK",
    "ACCESS GRANTED" (~2s total).
@@ -39,6 +41,7 @@ hacker aesthetic that stays professional, never gimmicky.
 9. Ease all color/opacity transitions in and out — no hard strobing.
 
 ## BRANDING PLACEMENT
+
 - Real headshot photo is the primary identity throughout (hero section)
   — this is what a recruiter matches to the résumé/LinkedIn.
 - Skull/glitch mark used only as secondary branding: favicon, a small
@@ -46,6 +49,7 @@ hacker aesthetic that stays professional, never gimmicky.
   Never the same size or prominence as the headshot.
 
 ## STRUCTURE & MAINTAINABILITY
+
 - Store all real content (bio, stats, skills, projects, certs,
   experience) in a single data file: src/data/profile.ts. Every future
   content update becomes one targeted prompt against that file without
@@ -59,6 +63,7 @@ hacker aesthetic that stays professional, never gimmicky.
 ## REAL CONTENT
 
 **Hero**
+
 - Name: Andrew Vinston D'Souza ("Andyy")
 - Title: Aspiring SOC Analyst | Threat Detection & Incident Response
 - Subtitle: Top 4% on TryHackMe · BCA @ St. Aloysius University, Mangaluru
@@ -67,6 +72,7 @@ hacker aesthetic that stays professional, never gimmicky.
   point the button's href at /resume.pdf), Contact, GitHub, LinkedIn
 
 **System log strip** (near hero, styled like a tailed terminal log)
+
 - 2-3 lines of real recent activity, e.g.:
   "[LOG] Completed: Greenholt v2 — phishing investigation"
   "[LOG] Pushed 3 commits to SOC-Portfolio"
@@ -74,6 +80,7 @@ hacker aesthetic that stays professional, never gimmicky.
   manually in profile.ts)
 
 **Stats bar** (dashboard-style readout)
+
 - Rank: 95645 (top 4%) · Badges: 23 · Streak: 61 days · Rooms: 116
 
 **About**
@@ -88,6 +95,7 @@ or entry-level SOC Analyst role."
 
 **Skills** (grouped, collapsible/accordion style — "> expand: Tools &
 Technologies" — don't dump 51 tags flat)
+
 - Core Security: Threat Detection, Incident Response, Cybersecurity,
   Information Security, Cyber Risk Management, Risk Assessment,
   Vulnerability Assessment, Network Security, Networking Fundamentals,
@@ -106,6 +114,7 @@ Fundamentals, OWASP Top 10, Web Application Basics, Greenholt v2
 **Projects** (link each to its GitHub repo; feature the tracker as a
 short STAR-style case study — problem/approach/outcome/what's next —
 not just a feature list)
+
 1. Security Incident & Asset Tracker —
    github.com/andyydz/security-incident-asset-tracker
    Java + JDBC + MariaDB console app tracking IT assets and logging
@@ -124,6 +133,7 @@ not just a feature list)
    Academy Network Defense course.
 
 **Certifications**
+
 - Foundations of Cybersecurity — Google/Coursera (Jun 2026)
 - Play It Safe: Manage Security Risks — Google/Coursera (Jul 2026)
 - Pre Security Certificate — TryHackMe (May 2026)
@@ -146,22 +156,26 @@ bridge-based network fix.
 the two LinkedIn recommendations, with name and title)
 
 **Contact / Links**
+
 - GitHub: https://github.com/andyydz
 - LinkedIn: https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/
 - TryHackMe: https://tryhackme.com/p/andyydz57
 - Email: andyydz57@gmail.com
 
 ## COPY CONSISTENCY
+
 Use "Aspiring SOC Analyst" everywhere on the site (hero, meta title,
 About) — never "SOC Analyst (L1)" — matching the current LinkedIn
 headline exactly.
 
 ## SITE STRUCTURE
+
 Hero → System log strip → Stats bar → About → Skills → Projects →
 Certifications → Experience → Volunteering → Testimonial → Contact →
 Footer
 
 ## MOTION & ANIMATION
+
 - Scroll-triggered reveals: each section (About, Skills, Projects, Certs,
   Experience, etc.) fades up and in (translateY 16px → 0, opacity 0 → 1)
   as it enters the viewport, using IntersectionObserver — not a library.
@@ -196,7 +210,6 @@ Footer
   role, and CTA buttons must be fully legible immediately — never
   gated behind an animation completing.
 
-
 - Fully responsive (375px mobile through desktop), no horizontal
   scroll, nav collapses to a mobile menu, animations simplify on small
   screens.
@@ -217,6 +230,7 @@ Footer
   build time.
 
 ## SECURITY
+
 - Enforce HTTPS everywhere; verify no mixed-content warnings.
 - Security headers: Content-Security-Policy (restrict script/style
   sources to self + known CDNs), X-Content-Type-Options: nosniff,

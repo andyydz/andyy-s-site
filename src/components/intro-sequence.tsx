@@ -33,7 +33,9 @@ export function IntroSequence({ onDone }: { onDone: () => void }) {
       return;
     }
     const timers: number[] = [];
-    BOOT.forEach((_, i) => timers.push(window.setTimeout(() => setBootIndex(i + 1), 400 + i * 420)));
+    BOOT.forEach((_, i) =>
+      timers.push(window.setTimeout(() => setBootIndex(i + 1), 400 + i * 420)),
+    );
     timers.push(window.setTimeout(() => setPhase(1), 2100));
     timers.push(window.setTimeout(() => setPhase(2), 2700));
     timers.push(window.setTimeout(() => setPhase(3), 3900));

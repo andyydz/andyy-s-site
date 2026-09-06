@@ -180,10 +180,18 @@ function AdminPage() {
         <div className="grid gap-4 md:grid-cols-2">
           <Panel title="totals">
             <ul className="space-y-1">
-              <li>views (90d): <span className="text-accent">{data.totals.views}</span></li>
-              <li>views (30d): <span className="text-accent">{data.totals.views30d}</span></li>
-              <li>views (7d): <span className="text-accent">{data.totals.views7d}</span></li>
-              <li>messages: <span className="text-accent">{data.totals.submissions}</span></li>
+              <li>
+                views (90d): <span className="text-accent">{data.totals.views}</span>
+              </li>
+              <li>
+                views (30d): <span className="text-accent">{data.totals.views30d}</span>
+              </li>
+              <li>
+                views (7d): <span className="text-accent">{data.totals.views7d}</span>
+              </li>
+              <li>
+                messages: <span className="text-accent">{data.totals.submissions}</span>
+              </li>
             </ul>
           </Panel>
 
