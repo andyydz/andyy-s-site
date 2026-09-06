@@ -103,7 +103,15 @@ function useCountUp(target: number, run: boolean) {
   return value;
 }
 
-function StatCard({ stat, run, index }: { stat: (typeof profile.stats)[number]; run: boolean; index: number }) {
+function StatCard({
+  stat,
+  run,
+  index,
+}: {
+  stat: (typeof profile.stats)[number];
+  run: boolean;
+  index: number;
+}) {
   const value = useCountUp(stat.value, run);
   return (
     <div
@@ -158,7 +166,8 @@ export function StatsBar() {
         {data && (
           <span>
             · public repos: <span className="text-accent">{data.repos}</span> · contributions (last
-            year): <span className="text-accent">{data.contributions?.toLocaleString() ?? "—"}</span>
+            year):{" "}
+            <span className="text-accent">{data.contributions?.toLocaleString() ?? "—"}</span>
           </span>
         )}
       </div>
@@ -247,7 +256,9 @@ export function Projects() {
             key={f.name}
             className="panel shimmer-border reveal p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
           >
-            <p className="font-mono text-[10px] tracking-[0.2em] text-accent">FEATURED CASE STUDY</p>
+            <p className="font-mono text-[10px] tracking-[0.2em] text-accent">
+              FEATURED CASE STUDY
+            </p>
             <h3 className="mt-2 font-mono text-base text-primary sm:text-lg">
               <a href={f.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
                 {f.name}
@@ -271,7 +282,6 @@ export function Projects() {
       </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-
         {profile.projects.map((p, i) => (
           <article
             key={p.name}
@@ -288,7 +298,10 @@ export function Projects() {
             </p>
             <ul className="mt-4 flex flex-wrap gap-1.5">
               {p.tags.map((t) => (
-                <li key={t} className="border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+                <li
+                  key={t}
+                  className="border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground"
+                >
                   {t}
                 </li>
               ))}
@@ -426,7 +439,8 @@ export function Contact() {
     if (name.length < 2 || name.length > 80) errs.push("name must be 2–80 characters");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
       errs.push("valid email required");
-    if (message.length < 10 || message.length > 1000) errs.push("message must be 10–1000 characters");
+    if (message.length < 10 || message.length > 1000)
+      errs.push("message must be 10–1000 characters");
     setErrors(errs);
     setSent(false);
     if (errs.length) return;
@@ -456,7 +470,11 @@ export function Contact() {
               href: profile.links.linkedin,
               text: "linkedin.com/in/andrew-vinston-d-souza",
             },
-            { label: "tryhackme", href: profile.links.tryhackme, text: "tryhackme.com/p/andyydz57" },
+            {
+              label: "tryhackme",
+              href: profile.links.tryhackme,
+              text: "tryhackme.com/p/andyydz57",
+            },
             { label: "reddit", href: profile.links.reddit, text: "reddit.com/user/RavenGhost6767" },
           ].map(({ label, href, text }, i) => (
             <li key={label} className="reveal flex flex-wrap items-center gap-2" style={delay(i)}>
@@ -493,7 +511,6 @@ export function Contact() {
                 </button>
               )}
             </li>
-
           ))}
         </ul>
 
@@ -588,7 +605,9 @@ export function SiteFooter() {
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={l.label === "linkedin" ? undefined : () => trackClick(`footer-${l.label}`)}
+                  onClick={
+                    l.label === "linkedin" ? undefined : () => trackClick(`footer-${l.label}`)
+                  }
                   className="nav-link inline-flex min-h-11 items-center text-muted-foreground hover:text-primary"
                 >
                   {l.label}

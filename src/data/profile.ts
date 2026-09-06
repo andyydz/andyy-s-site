@@ -35,7 +35,6 @@ export const profile = {
     "[LOG] 61-day streak maintained on TryHackMe",
   ],
 
-
   notableRooms: [
     "Nmap",
     "Wireshark",
@@ -93,7 +92,18 @@ export const profile = {
     },
     {
       name: "Foundations",
-      items: ["Linux", "Virtualization", "Git", "GitHub", "HTML", "CSS", "Bootstrap", "Java", "SQL", "Python (basics)"],
+      items: [
+        "Linux",
+        "Virtualization",
+        "Git",
+        "GitHub",
+        "HTML",
+        "CSS",
+        "Bootstrap",
+        "Java",
+        "SQL",
+        "Python (basics)",
+      ],
     },
   ],
 
@@ -135,7 +145,6 @@ export const profile = {
   ],
 
   projects: [
-
     {
       name: "Cybersecurity-Writeups",
       repo: "https://github.com/andyydz/Cybersecurity-Writeups",

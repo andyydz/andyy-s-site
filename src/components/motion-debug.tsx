@@ -25,11 +25,7 @@ type Check = { name: string; pass: boolean; detail: string };
 
 function describe(el: Element | null | undefined) {
   if (!el || !(el instanceof Element)) return "—";
-  const cls = (el.getAttribute("class") ?? "")
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .join(".");
+  const cls = (el.getAttribute("class") ?? "").split(/\s+/).filter(Boolean).slice(0, 2).join(".");
   return `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ""}${cls ? `.${cls}` : ""}`;
 }
 
@@ -43,8 +39,7 @@ function readAnimations(): AnimEntry[] {
       (a as CSSAnimation).animationName ??
       (a as CSSTransition).transitionProperty ??
       a.constructor.name;
-    const ambient =
-      AMBIENT.has(name) || (timing?.iterations ?? 1) === Infinity;
+    const ambient = AMBIENT.has(name) || (timing?.iterations ?? 1) === Infinity;
     return {
       key: `${i}-${name}`,
       label: name,
@@ -98,8 +93,7 @@ function auditDurations(): Check[] {
 }
 
 function auditReducedMotion(simulated: boolean): Check[] {
-  const active =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches || simulated;
+  const active = window.matchMedia("(prefers-reduced-motion: reduce)").matches || simulated;
   const checks: Check[] = [
     {
       name: "prefers-reduced-motion",
@@ -117,9 +111,7 @@ function auditReducedMotion(simulated: boolean): Check[] {
   const bad = reveals.filter((el) => {
     const cs = getComputedStyle(el);
     return (
-      longest(cs.transitionDuration) > 1 ||
-      cs.transform !== "none" ||
-      parseFloat(cs.opacity) < 1
+      longest(cs.transitionDuration) > 1 || cs.transform !== "none" || parseFloat(cs.opacity) < 1
     );
   });
   checks.push({
@@ -132,7 +124,8 @@ function auditReducedMotion(simulated: boolean): Check[] {
   checks.push({
     name: "no running keyframe animations",
     pass: animated.length === 0,
-    detail: animated.length === 0 ? "canvas + keyframes idle" : animated.map((a) => a.label).join(", "),
+    detail:
+      animated.length === 0 ? "canvas + keyframes idle" : animated.map((a) => a.label).join(", "),
   });
 
   const canvases = document.querySelectorAll("canvas");
