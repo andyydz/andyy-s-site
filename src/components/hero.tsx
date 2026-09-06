@@ -49,10 +49,9 @@ export function Hero() {
               GitHub
             </a>
             <a
-              href={profile.links.linkedin}
+              href="https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/"
               target="_blank"
-              rel="noreferrer noopener"
-              onClick={() => trackClick("linkedin")}
+              rel="noopener noreferrer"
               className="min-h-11 border border-border px-4 py-2 text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
             >
               LinkedIn
