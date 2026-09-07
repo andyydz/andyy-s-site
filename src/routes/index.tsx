@@ -33,6 +33,10 @@ export const Route = createFileRoute("/")({
       { title: TITLE },
       { name: "description", content: DESCRIPTION },
       { name: "robots", content: "index, follow" },
+      {
+        name: "google-site-verification",
+        content: "ZthIxWNOX6F3tuIr8KRO3n8nJXBZEW8ln3ndT8jMWG8",
+      },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "profile" },
