@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+
+Sitemap: https://andyy-s-site.vercel.app/sitemap.xml
