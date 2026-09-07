@@ -20,9 +20,11 @@ import {
 } from "@/components/sections";
 import { profile } from "@/data/profile";
 
-const TITLE = "Andrew D'Souza — Aspiring SOC Analyst | Threat Detection & IR";
+const SITE_URL = "https://andyy-s-site.vercel.app";
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+const TITLE = "Andrew D'Souza — SOC Analyst Portfolio | Threat Detection";
 const DESCRIPTION =
-  "Portfolio of Andrew Vinston D'Souza (Andyy), aspiring SOC Analyst focused on threat detection and incident response. Top 4% on TryHackMe — Splunk, Wireshark, MITRE ATT&CK.";
+  "Cybersecurity portfolio of Andrew Vinston D'Souza (Andyy): SOC analysis, threat detection and incident response projects using Splunk, Wireshark and MITRE ATT&CK.";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,15 +32,19 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: TITLE },
       { name: "description", content: DESCRIPTION },
+      { name: "robots", content: "index, follow" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "profile" },
-      { property: "og:url", content: "/" },
-      { property: "og:image", content: "/og-image.jpg" },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:alt", content: "Andrew D'Souza — SOC analyst portfolio" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "/og-image.jpg" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -50,8 +56,23 @@ export const Route = createFileRoute("/")({
           jobTitle: "Aspiring SOC Analyst",
           email: `mailto:${profile.email}`,
           description: DESCRIPTION,
+          url: `${SITE_URL}/`,
+          image: OG_IMAGE,
+          knowsAbout: [
+            "Security Operations Center (SOC)",
+            "Threat detection",
+            "Incident response",
+            "Splunk",
+            "Wireshark",
+            "MITRE ATT&CK",
+          ],
           alumniOf: "St. Aloysius University, Mangaluru",
-          sameAs: [profile.links.github, profile.links.linkedin, profile.links.tryhackme],
+          sameAs: [
+            profile.links.github,
+            profile.links.linkedin,
+            profile.links.tryhackme,
+            profile.links.reddit,
+          ],
         }),
       },
     ],
