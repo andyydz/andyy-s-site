@@ -269,4 +269,4 @@ Projects, labs, and writeups are intended for educational, defensive-security, a
 
 ## License
 
-Licensing information has not yet been specified.
+MIT Licensing .
