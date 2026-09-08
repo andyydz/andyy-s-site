@@ -7,14 +7,17 @@ import { SiteQrCode } from "@/components/qr-code";
 import { useGitHubStats } from "@/hooks/use-github-stats";
 import { usePrefersReducedMotion, useReveal } from "@/hooks/use-reveal";
 import skull from "@/assets/skull.png";
+import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin, Mail, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 /* ---------- shared bits ---------- */
 
 function SectionHeading({ children }: { children: string }) {
   return (
-    <h2 className="reveal font-mono text-lg text-foreground sm:text-xl">
+    <h2 className="reveal flex items-center gap-3 font-mono text-xl text-foreground sm:text-2xl">
       <span className="text-primary">&gt; </span>
       {children}
+      <span className="h-px min-w-6 flex-1 bg-border" aria-hidden="true" />
     </h2>
   );
 }
@@ -30,9 +33,11 @@ function Section({
 }) {
   const ref = useReveal<HTMLElement>();
   return (
-    <section id={id} ref={ref} className="mx-auto max-w-6xl scroll-mt-24 px-5 py-14">
-      <SectionHeading>{heading}</SectionHeading>
-      <div className="mt-6">{children}</div>
+    <section id={id} ref={ref} className="scroll-mt-20 border-t border-border/40">
+      <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
+        <SectionHeading>{heading}</SectionHeading>
+        <div className="mt-8">{children}</div>
+      </div>
     </section>
   );
 }
@@ -107,10 +112,10 @@ function StatCard({ stat, run, index }: { stat: (typeof profile.stats)[number]; 
   const value = useCountUp(stat.value, run);
   return (
     <div
-      className="panel shimmer-border reveal px-4 py-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+      className="panel stat-card reveal px-4 py-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
       style={delay(index)}
     >
-      <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground">{stat.label}</p>
+      <p className="flex items-center justify-between font-mono text-[10px] tracking-[0.18em] text-muted-foreground"><span>TRYHACKME / {stat.label}</span><span className="status-dot" aria-hidden="true" /></p>
       <p className="mt-2 font-mono text-2xl text-primary sm:text-3xl">
         {value.toLocaleString()}
         {stat.suffix}
@@ -144,7 +149,7 @@ export function StatsBar() {
   }, [ref]);
 
   return (
-    <section ref={ref} className="mx-auto max-w-6xl px-5 py-10">
+    <section ref={ref} aria-label="Verified learning statistics" className="mx-auto max-w-6xl px-5 py-12">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {profile.stats.map((s, i) => (
           <StatCard key={s.label} stat={s} run={run} index={i} />
@@ -175,9 +180,10 @@ export function StatsBar() {
 export function About() {
   return (
     <Section id="about" heading="cat about.md">
-      <p className="reveal panel max-w-3xl p-5 text-sm leading-relaxed text-muted-foreground sm:text-base">
-        {profile.about}
-      </p>
+      <div className="reveal grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)]">
+        <p className="font-mono text-xs text-primary">01 / PROFILE</p>
+        <p className="max-w-4xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{profile.about}</p>
+      </div>
     </Section>
   );
 }
@@ -185,30 +191,40 @@ export function About() {
 /* ---------- skills ---------- */
 
 export function Skills() {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<Set<number>>(new Set());
+  const allExpanded = expanded.size === profile.skillGroups.length;
+  const toggle = (index: number) => {
+    setExpanded((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
   return (
     <Section id="skills" heading="ls skills/">
       <div className="space-y-3">
         {profile.skillGroups.map((group, gi) => (
-          <div key={group.name} className="panel reveal" style={delay(gi)}>
-            <button
+          <div key={group.name} className="panel reveal overflow-hidden" style={delay(gi)}>
+            <Button
               type="button"
-              aria-expanded={expanded}
-              onClick={() => setExpanded(!expanded)}
-              className="flex w-full items-center justify-between px-4 py-3 font-mono text-xs text-primary sm:text-sm"
+              variant="ghost"
+              aria-expanded={expanded.has(gi)}
+              onClick={() => toggle(gi)}
+              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary hover:bg-secondary sm:text-sm"
             >
               <span>
-                &gt; expand: {group.name}{" "}
+                {String(gi + 1).padStart(2, "0")} / {group.name}{" "}
                 <span className="text-muted-foreground">[{group.items.length}]</span>
               </span>
-              <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
-            </button>
-            {expanded && (
-              <ul className="flex flex-wrap gap-2 border-t border-border px-4 py-4">
+              <ChevronDown aria-hidden="true" className={`text-muted-foreground transition-transform duration-200 ${expanded.has(gi) ? "rotate-180" : ""}`} />
+            </Button>
+            {expanded.has(gi) && (
+              <ul className="flex flex-wrap gap-2 border-t border-border bg-background/40 px-4 py-4">
                 {group.items.map((item, i) => (
                   <li
                     key={item}
-                    className="animate-fade-in border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                    className="animate-fade-in border border-border bg-card px-3 py-1.5 font-mono text-[11px] text-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
                     style={{
                       animationDelay: `${i * 60}ms`,
                       animationFillMode: "backwards",
@@ -223,15 +239,16 @@ export function Skills() {
           </div>
         ))}
       </div>
-      <button
+       <Button
         type="button"
-        onClick={() => setExpanded(!expanded)}
-        aria-expanded={expanded}
-        className="reveal mt-5 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-150 hover:border-border-strong hover:text-foreground"
+         variant="outline"
+         onClick={() => setExpanded(allExpanded ? new Set() : new Set(profile.skillGroups.map((_, index) => index)))}
+         aria-expanded={allExpanded}
+         className="reveal mt-5 h-11 rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
       >
-        <span>{expanded ? "> collapse" : "> read more"}</span>
-        <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
-      </button>
+         <span>{allExpanded ? "> collapse all" : "> expand all"}</span>
+         <ChevronDown aria-hidden="true" className={allExpanded ? "rotate-180" : ""} />
+       </Button>
     </Section>
   );
 }

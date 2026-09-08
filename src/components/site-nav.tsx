@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { FileDown, Menu, X } from "lucide-react";
 import skull from "@/assets/skull.png";
+import { Button } from "@/components/ui/button";
 
 const SECTIONS = [
   { id: "about", label: "about" },
@@ -13,12 +15,32 @@ const SECTIONS = [
 export function SiteNav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("top");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const targets = ["top", ...SECTIONS.map((section) => section.id)]
+      .map((id) => document.getElementById(id))
+      .filter((element): element is HTMLElement => Boolean(element));
+    if (!targets.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target.id) setActive(visible.target.id);
+      },
+      { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.2, 0.6] },
+    );
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -29,9 +51,9 @@ export function SiteNav() {
     >
       <nav
         aria-label="Main"
-        className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3"
+        className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 py-3 md:grid-cols-[auto_minmax(0,1fr)_auto]"
       >
-        <a href="#top" className="flex items-center gap-2 font-mono text-sm text-foreground">
+        <a href="#top" className="flex min-w-0 items-center gap-2 font-mono text-sm text-foreground">
           <img
             src={skull}
             alt=""
@@ -39,54 +61,58 @@ export function SiteNav() {
             height={30}
             className="h-[30px] w-[30px] rounded-full border border-border object-cover"
           />
-          <span>
+          <span className="truncate">
             andyy<span className="text-primary">dz</span>
           </span>
         </a>
 
-        <ul className="hidden items-center gap-6 font-mono text-xs text-muted-foreground md:flex">
+        <ul className="hidden items-center justify-center gap-5 font-mono text-xs text-muted-foreground md:flex">
           {SECTIONS.map((s) => (
             <li key={s.id}>
-              <a href={`#${s.id}`} className="nav-link hover:text-primary">
+              <a
+                href={`#${s.id}`}
+                aria-current={active === s.id ? "location" : undefined}
+                className="nav-link inline-flex min-h-11 items-center transition-colors hover:text-primary aria-[current=location]:text-primary"
+              >
                 {s.label}
               </a>
             </li>
           ))}
         </ul>
 
-        <a
-          href="/resume.pdf"
-          className="hidden border border-border-strong px-3 py-1.5 font-mono text-xs text-primary transition-colors duration-150 hover:bg-primary hover:text-primary-foreground md:inline-block"
-        >
-          resume.pdf
-        </a>
+        <Button asChild variant="outline" className="hidden h-11 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground md:inline-flex">
+          <a href="/resume.pdf"><FileDown aria-hidden="true" />resume.pdf</a>
+        </Button>
 
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="icon"
           aria-expanded={open}
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="border border-border px-2 py-1 font-mono text-xs text-primary md:hidden"
+          className="h-11 w-11 rounded-sm border-border bg-transparent text-primary md:hidden"
         >
-          {open ? "[ x ]" : "[ ≡ ]"}
-        </button>
+          {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+        </Button>
       </nav>
 
       {open && (
-        <ul className="border-t border-border bg-background px-5 py-3 font-mono text-sm md:hidden">
+        <ul className="border-t border-border bg-background/95 px-5 py-3 font-mono text-sm backdrop-blur md:hidden">
           {SECTIONS.map((s) => (
-            <li key={s.id} className="py-1.5">
+            <li key={s.id}>
               <a
                 href={`#${s.id}`}
                 onClick={() => setOpen(false)}
-                className="text-muted-foreground hover:text-primary"
+                aria-current={active === s.id ? "location" : undefined}
+                className="flex min-h-11 items-center border-b border-border/40 text-muted-foreground hover:text-primary aria-[current=location]:text-primary"
               >
                 &gt; {s.label}
               </a>
             </li>
           ))}
-          <li className="py-1.5">
-            <a href="/resume.pdf" className="text-primary">
+          <li>
+            <a href="/resume.pdf" className="flex min-h-11 items-center text-primary">
               &gt; resume.pdf
             </a>
           </li>
