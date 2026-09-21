@@ -625,3 +625,9 @@ The repository follows a **modular full-stack TypeScript architecture**:
 - **public** contains directly served resources
 - **Supabase** contains backend configuration and migrations
 - **docs** contain structured technical documentation
+
+## Documentation Maintenance
+
+This document should be updated whenever the project structure changes significantly,
+including the addition or removal of major directories, application modules,
+integrations, configuration files, or deployment-related resources.
