@@ -201,3 +201,10 @@ Documents other than this overview are still being written.
 | GitHub Profile | https://github.com/andyydz |
 | TryHackMe | https://tryhackme.com/p/andyydz57 |
 | LinkedIn | https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/ |
+
+## Documentation Scope
+
+This document provides the high-level context for ANDYY-S-SITE. Detailed
+technical information is maintained in the other numbered documents under
+`docs/`, covering the project's architecture, structure, configuration,
+security considerations, deployment, and related implementation details.
