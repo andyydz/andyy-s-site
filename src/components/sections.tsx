@@ -280,7 +280,7 @@ export function Projects() {
                 ["outcome", f.outcome],
                 ["what's next", f.next],
               ].map(([k, v], i) => (
-                <div key={k} className="reveal bg-card px-5 py-5 sm:px-6" style={delay(i)}>
+                <div key={k} className="bg-card px-5 py-5 sm:px-6">
                   <dt className="font-mono text-[11px] uppercase text-accent">0{i + 1} / {k}</dt>
                   <dd className="mt-2 text-sm leading-6 text-muted-foreground">{v}</dd>
                 </div>
