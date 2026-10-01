@@ -7,7 +7,7 @@ import { SiteQrCode } from "@/components/qr-code";
 import { useGitHubStats } from "@/hooks/use-github-stats";
 import { usePrefersReducedMotion, useReveal } from "@/hooks/use-reveal";
 import skull from "@/assets/skull.png";
-import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin, Mail, Send } from "lucide-react";
+import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /* ---------- shared bits ---------- */
@@ -262,14 +262,14 @@ export function Projects() {
         {profile.featuredProjects.map((f, projectIndex) => (
           <article
             key={f.name}
-            className="panel case-file shimmer-border reveal overflow-hidden transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+            className="panel case-file reveal overflow-hidden transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
           >
-            <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:px-6">
+            <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
               <div className="min-w-0">
                 <p className="font-mono text-[10px] text-accent">CASE FILE {String(projectIndex + 1).padStart(2, "0")} · FEATURED</p>
-                <h3 className="mt-2 truncate font-mono text-base text-primary sm:text-lg">{f.name}</h3>
+                <h3 className="mt-2 font-mono text-base leading-snug text-primary sm:text-lg">{f.name}</h3>
               </div>
-              <Button asChild variant="outline" size="sm" className="h-10 shrink-0 rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary">
+              <Button asChild variant="outline" size="sm" className="h-10 shrink-0 justify-self-start rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary sm:justify-self-auto">
                 <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
               </Button>
             </header>
