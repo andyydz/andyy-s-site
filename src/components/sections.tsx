@@ -98,7 +98,7 @@ function useCountUp(target: number, run: boolean) {
     let raf = 0;
     const start = performance.now();
     const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / 1000);
+      const p = Math.min(1, (t - start) / 380);
       setValue(Math.round(target * (1 - Math.pow(1 - p, 3))));
       if (p < 1) raf = requestAnimationFrame(tick);
     };
@@ -258,28 +258,31 @@ export function Skills() {
 export function Projects() {
   return (
     <Section id="projects" heading="ls projects/">
-      <div className="grid gap-4">
-        {profile.featuredProjects.map((f) => (
+      <div className="grid gap-5">
+        {profile.featuredProjects.map((f, projectIndex) => (
           <article
             key={f.name}
-            className="panel shimmer-border reveal p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+            className="panel case-file shimmer-border reveal overflow-hidden transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
           >
-            <p className="font-mono text-[10px] tracking-[0.2em] text-accent">FEATURED CASE STUDY</p>
-            <h3 className="mt-2 font-mono text-base text-primary sm:text-lg">
-              <a href={f.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
-                {f.name}
-              </a>
-            </h3>
-            <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+            <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:px-6">
+              <div className="min-w-0">
+                <p className="font-mono text-[10px] text-accent">CASE FILE {String(projectIndex + 1).padStart(2, "0")} · FEATURED</p>
+                <h3 className="mt-2 truncate font-mono text-base text-primary sm:text-lg">{f.name}</h3>
+              </div>
+              <Button asChild variant="outline" size="sm" className="h-10 shrink-0 rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary">
+                <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
+              </Button>
+            </header>
+            <dl className="grid gap-px bg-border sm:grid-cols-2">
               {[
                 ["problem", f.problem],
                 ["approach", f.approach],
                 ["outcome", f.outcome],
                 ["what's next", f.next],
               ].map(([k, v], i) => (
-                <div key={k} className="reveal" style={delay(i)}>
-                  <dt className="font-mono text-[11px] text-accent">&gt; {k}</dt>
-                  <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{v}</dd>
+                <div key={k} className="reveal bg-card px-5 py-5 sm:px-6" style={delay(i)}>
+                  <dt className="font-mono text-[11px] uppercase text-accent">0{i + 1} / {k}</dt>
+                  <dd className="mt-2 text-sm leading-6 text-muted-foreground">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -287,25 +290,24 @@ export function Projects() {
         ))}
       </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
 
         {profile.projects.map((p, i) => (
           <article
             key={p.name}
-            className="panel shimmer-border reveal flex flex-col p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+            className="panel reveal flex flex-col p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong sm:p-6"
             style={delay(i)}
           >
-            <h3 className="font-mono text-sm text-primary">
-              <a href={p.repo} target="_blank" rel="noreferrer noopener" className="nav-link">
-                {p.name}
-              </a>
-            </h3>
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+              <h3 className="min-w-0 font-mono text-sm text-primary">{p.name}</h3>
+              <a href={p.repo} target="_blank" rel="noreferrer noopener" aria-label={`Open ${p.name} repository`} className="inline-flex h-11 w-11 shrink-0 items-center justify-center border border-border text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"><ExternalLink className="h-4 w-4" aria-hidden="true" /></a>
+            </div>
             <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
               {p.description}
             </p>
             <ul className="mt-4 flex flex-wrap gap-1.5">
               {p.tags.map((t) => (
-                <li key={t} className="border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+                <li key={t} className="border border-border bg-secondary/40 px-2.5 py-1 font-mono text-[10px] text-muted-foreground">
                   {t}
                 </li>
               ))}
@@ -322,8 +324,9 @@ export function Projects() {
 export function Certifications() {
   return (
     <Section id="certifications" heading="cat certifications.tsv">
-      <div className="panel reveal overflow-x-auto">
-        <table className="w-full min-w-[420px] font-mono text-xs">
+      <div className="panel reveal overflow-hidden">
+        <div className="overflow-x-auto">
+        <table className="w-full min-w-[520px] font-mono text-xs">
           <thead>
             <tr className="border-b border-border text-left text-muted-foreground">
               <th scope="col" className="px-4 py-2 font-normal">
@@ -339,17 +342,18 @@ export function Certifications() {
           </thead>
           <tbody>
             {profile.certifications.map((c) => (
-              <tr key={c.name} className="border-b border-border/60 last:border-0">
-                <td className="px-4 py-2.5 text-foreground">{c.name}</td>
-                <td className="px-4 py-2.5 text-muted-foreground">{c.issuer}</td>
-                <td className="px-4 py-2.5 text-accent">{c.date}</td>
+              <tr key={c.name} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/40">
+                <td className="px-4 py-4 text-foreground"><span className="mr-2 text-primary">✓</span>{c.name}</td>
+                <td className="px-4 py-4 text-muted-foreground">{c.issuer}</td>
+                <td className="px-4 py-4 text-accent">{c.date}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
-      <p className="reveal mt-3 font-mono text-[11px] text-muted-foreground">
-        <span className="text-primary">#</span> {profile.certsInProgress}
+      <p className="reveal mt-4 border-l-2 border-accent bg-secondary/30 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
+        <span className="text-accent">IN PROGRESS /</span> {profile.certsInProgress}
       </p>
     </Section>
   );
@@ -361,12 +365,12 @@ function TimelineList({ items }: { items: typeof profile.experience }) {
   return (
     <div className="space-y-4">
       {items.map((e, i) => (
-        <article key={e.role} className="panel reveal p-5" style={delay(i)}>
-          <h3 className="font-mono text-sm text-primary">{e.role}</h3>
-          <p className="mt-1 font-mono text-[11px] text-muted-foreground">
-            {e.org} · <span className="text-accent">{e.period}</span>
-          </p>
-          <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+        <article key={e.role} className="timeline-entry reveal border-l border-border-strong pl-5 sm:pl-7" style={delay(i)}>
+          <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+            <div className="min-w-0"><h3 className="font-mono text-base text-primary">{e.role}</h3><p className="mt-1 font-mono text-[11px] text-muted-foreground">{e.org}</p></div>
+            <p className="font-mono text-[11px] text-accent sm:text-right">{e.period}</p>
+          </div>
+          <ul className="mt-4 space-y-2 text-sm leading-6 text-muted-foreground">
             {e.points.map((p) => (
               <li key={p}>
                 <span className="text-primary">–</span> {p}
@@ -401,10 +405,11 @@ export function Testimonial() {
   const t = profile.testimonial;
   return (
     <Section id="testimonial" heading="cat testimonial.txt">
-      <blockquote className="panel reveal max-w-3xl p-5">
-        <p className="text-sm leading-relaxed text-foreground italic sm:text-base">“{t.quote}”</p>
-        <footer className="mt-3 font-mono text-[11px] text-muted-foreground">
-          — {t.author}, {t.role}
+      <blockquote className="reveal max-w-4xl border-l-2 border-primary pl-5 sm:pl-8">
+        <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
+        <p className="mt-5 text-base leading-8 text-foreground italic sm:text-lg">“{t.quote}”</p>
+        <footer className="mt-5 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
+          <span className="text-primary">{t.author}</span><br />{t.role}
         </footer>
       </blockquote>
     </Section>
@@ -463,8 +468,10 @@ export function Contact() {
 
   return (
     <Section id="contact" heading="./contact.sh">
-      <div className="grid gap-4 md:grid-cols-2">
-        <ul className="panel reveal space-y-3 p-5 font-mono text-xs sm:text-sm">
+      <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+        <div className="panel reveal p-5 sm:p-6">
+          <p className="mb-5 font-mono text-xs text-accent">SECURE CHANNELS</p>
+          <ul className="space-y-1 font-mono text-xs sm:text-sm">
           {[
             { label: "email", href: `mailto:${profile.email}`, text: profile.email },
             { label: "github", href: profile.links.github, text: "github.com/andyydz" },
@@ -476,45 +483,37 @@ export function Contact() {
             { label: "tryhackme", href: profile.links.tryhackme, text: "tryhackme.com/p/andyydz57" },
             { label: "reddit", href: profile.links.reddit, text: "reddit.com/user/RavenGhost6767" },
           ].map(({ label, href, text }, i) => (
-            <li key={label} className="reveal flex flex-wrap items-center gap-2" style={delay(i)}>
-              <span className="text-muted-foreground">{label}:</span>
+            <li key={label} className="reveal grid grid-cols-[76px_minmax(0,1fr)_auto] items-center gap-2 border-b border-border/50 py-2.5 last:border-0" style={delay(i)}>
+              <span className="text-muted-foreground">{label}</span>
               <a
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                className="nav-link text-primary break-all"
+                className="min-w-0 break-all text-primary hover:underline"
               >
                 {text}
               </a>
               {label === "email" && (
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="icon"
                   onClick={copyEmail}
                   aria-label="Copy email address"
                   title="Copy email address"
-                  className="no-print inline-flex items-center gap-1 border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                  className="no-print h-11 w-11 rounded-sm border-border bg-transparent text-muted-foreground hover:border-border-strong hover:bg-secondary hover:text-primary"
                 >
-                  <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    aria-hidden="true"
-                  >
-                    <rect x="9" y="9" width="12" height="12" rx="2" />
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                  </svg>
-                  <span aria-live="polite">{copied ? "copied" : "copy"}</span>
-                </button>
+                  {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                </Button>
               )}
             </li>
 
           ))}
-        </ul>
+          </ul>
+        </div>
 
-        <form onSubmit={onSubmit} className="panel reveal no-print space-y-3 p-5" noValidate>
+        <form onSubmit={onSubmit} className="panel reveal no-print space-y-4 p-5 sm:p-6" noValidate>
+          <div><p className="font-mono text-xs text-accent">MESSAGE REQUEST</p><p className="mt-1 text-xs text-muted-foreground">Fields are validated before submission.</p></div>
           <div className="hidden" aria-hidden="true">
             <label htmlFor="company_url">Company URL</label>
             <input id="company_url" name="company_url" tabIndex={-1} autoComplete="off" />
@@ -524,7 +523,7 @@ export function Contact() {
             { id: "email", label: "email", type: "email", max: 254 },
           ].map((f) => (
             <div key={f.id}>
-              <label htmlFor={f.id} className="font-mono text-[11px] text-muted-foreground">
+              <label htmlFor={f.id} className="font-mono text-[11px] uppercase text-foreground">
                 {f.label}
               </label>
               <input
@@ -533,12 +532,12 @@ export function Contact() {
                 type={f.type}
                 maxLength={f.max}
                 required
-                className="mt-1 w-full border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none focus:border-border-strong"
+                className="mt-2 min-h-11 w-full border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
           ))}
           <div>
-            <label htmlFor="message" className="font-mono text-[11px] text-muted-foreground">
+            <label htmlFor="message" className="font-mono text-[11px] uppercase text-foreground">
               message
             </label>
             <textarea
@@ -547,7 +546,7 @@ export function Contact() {
               rows={4}
               maxLength={1000}
               required
-              className="mt-1 w-full border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none focus:border-border-strong"
+              className="mt-2 w-full resize-y border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
             />
           </div>
           {errors.length > 0 && (
@@ -562,12 +561,13 @@ export function Contact() {
               &gt; opening your mail client…
             </p>
           )}
-          <button
+          <Button
             type="submit"
-            className="border border-primary bg-primary px-4 py-2 font-mono text-xs text-primary-foreground transition-transform duration-150 hover:-translate-y-0.5"
+            disabled={sending}
+            className="h-11 rounded-sm font-mono text-xs active:translate-y-px"
           >
-            send message
-          </button>
+            <Send aria-hidden="true" />{sending ? "sending…" : "send message"}
+          </Button>
         </form>
       </div>
     </Section>
@@ -588,11 +588,12 @@ export function SiteFooter() {
         height={512}
         className="pointer-events-none absolute -right-6 -bottom-10 h-44 w-44 opacity-[0.05]"
       />
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 font-mono text-[11px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative mx-auto grid max-w-6xl gap-8 px-5 py-10 font-mono text-[11px] text-muted-foreground sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
         <div className="space-y-3">
           <p>
             © {updated.getFullYear()} {profile.name} · Aspiring SOC Analyst
           </p>
+          <p className="text-[10px] text-primary">SESSION COMPLETE · SAFE TO DISCONNECT</p>
           <ul className="flex flex-wrap gap-x-4 gap-y-1">
             {[
               { label: "github", href: profile.links.github },
@@ -606,9 +607,9 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={l.label === "linkedin" ? undefined : () => trackClick(`footer-${l.label}`)}
-                  className="nav-link inline-flex min-h-11 items-center text-muted-foreground hover:text-primary"
+                  className="nav-link inline-flex min-h-11 items-center gap-1.5 text-muted-foreground hover:text-primary"
                 >
-                  {l.label}
+                  {l.label}{l.label === "github" ? <Github aria-hidden="true" className="h-3.5 w-3.5" /> : l.label === "linkedin" ? <Linkedin aria-hidden="true" className="h-3.5 w-3.5" /> : null}
                 </a>
               </li>
             ))}

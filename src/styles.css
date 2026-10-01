@@ -29,6 +29,7 @@
   --color-input: var(--border);
   --color-ring: var(--ring);
   --color-alert: var(--alert);
+  --shadow-terminal: 0 16px 50px -30px color-mix(in oklab, var(--primary) 35%, transparent);
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
@@ -79,7 +80,7 @@
   h3,
   h4 {
     font-family: var(--font-mono);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 
   :focus-visible {
@@ -111,6 +112,41 @@
   border: 1px solid var(--color-border);
   background-color: color-mix(in oklab, var(--color-card) 70%, transparent);
   border-radius: var(--radius);
+}
+
+@utility shadow-terminal {
+  box-shadow: var(--shadow-terminal);
+}
+
+@utility status-dot {
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 10px color-mix(in oklab, var(--color-primary) 65%, transparent);
+}
+
+.stat-card {
+  background-image: linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 4%, transparent), transparent 55%);
+}
+
+.case-file {
+  box-shadow: var(--shadow-terminal);
+}
+
+.timeline-entry {
+  position: relative;
+}
+.timeline-entry::before {
+  content: "";
+  position: absolute;
+  left: -0.3rem;
+  top: 0.2rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid var(--color-primary);
+  background: var(--color-background);
 }
 
 @utility shimmer-border {

@@ -29,8 +29,8 @@ export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
   }, []);
 
   return (
-    <figure className="flex items-center gap-3">
-      <div className="border border-border p-1">
+    <figure className="flex items-center gap-4 border-l border-border pl-5">
+      <div className="border border-border-strong bg-background p-1.5 shadow-terminal">
         {src ? (
           <img
             src={src}
@@ -43,7 +43,7 @@ export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
           <div className="h-[88px] w-[88px] bg-background" aria-hidden="true" />
         )}
       </div>
-      <figcaption className="font-mono text-[10px] leading-relaxed text-muted-foreground">
+      <figcaption className="max-w-40 font-mono text-[10px] leading-relaxed text-muted-foreground">
         <span className="text-primary">$ qrencode -o site.png</span>
         <br />
         scan to open this portfolio
