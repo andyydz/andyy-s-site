@@ -226,6 +226,40 @@
   }
 }
 
+/* ---------- SOC operations core ---------- */
+.soc-stage { perspective: 1100px; }
+.soc-tilt {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform: rotateX(calc(4deg + var(--tilt-x))) rotateY(calc(-6deg + var(--tilt-y)));
+  transform-style: preserve-3d;
+  transition: transform 300ms ease-out;
+  background-color: color-mix(in oklab, var(--color-card) 85%, transparent);
+}
+.soc-plane { transform: translateZ(18px); }
+.soc-link { stroke: color-mix(in oklab, var(--color-info) 40%, transparent); stroke-width: 1; fill: none; stroke-dasharray: 3 4; }
+.soc-node { fill: var(--color-background); stroke: var(--color-border-strong); stroke-width: 0.8; rx: 2; }
+.soc-label { fill: var(--color-muted-foreground); font-family: var(--font-mono); font-size: 7.5px; letter-spacing: 0.08em; }
+.soc-label-strong { fill: var(--color-primary); font-size: 10px; font-weight: 700; }
+.soc-core { fill: color-mix(in oklab, var(--color-primary) 10%, var(--color-background)); stroke: var(--color-primary); stroke-width: 1; }
+.soc-ring { fill: none; stroke-width: 1; stroke-dasharray: 2 5; opacity: 0.8; transition: stroke 300ms ease-out; transform-origin: 160px 120px; animation: soc-spin 24s linear infinite; }
+.soc-dot { width: 0.4rem; height: 0.4rem; border-radius: 999px; display: inline-block; transition: background 300ms ease-out; }
+.soc-step { border: 1px solid var(--color-border); padding: 0.35rem 0.3rem; text-align: center; color: var(--color-muted-foreground); transition: color 300ms ease-out, border-color 300ms ease-out; }
+.soc-step[data-active] { color: var(--color-primary); border-color: var(--color-border-strong); }
+.soc-line { animation: soc-in 300ms ease-out; }
+@keyframes soc-spin { to { transform: rotate(360deg); } }
+@keyframes soc-in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) {
+  .soc-desktop-only { display: none; }
+  .soc-tilt { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .soc-tilt { transform: none; }
+  .soc-pulse { display: none; }
+}
+.force-reduced-motion .soc-tilt { transform: none; }
+.force-reduced-motion .soc-pulse { display: none; }
+
 /* ---------- scroll reveal ---------- */
 .reveal {
   opacity: 0;
