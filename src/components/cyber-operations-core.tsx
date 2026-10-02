@@ -67,7 +67,7 @@ export function CyberOperationsCore() {
     tiltRef.current?.style.setProperty("--tilt-y", "0deg");
   };
 
-  const current = PHASES[phase];
+  const current = PHASES[phase] ?? PHASES[0]!;
   const shown = EVENTS.slice(Math.max(0, lines - 4), lines);
 
   return (
