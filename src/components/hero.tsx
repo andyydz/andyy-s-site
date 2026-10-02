@@ -1,4 +1,5 @@
 import { MatrixRain } from "@/components/matrix-rain";
+import { CyberOperationsCore } from "@/components/cyber-operations-core";
 import { profile } from "@/data/profile";
 import { trackClick } from "@/lib/track";
 import headshot from "@/assets/headshot.jpg";
@@ -61,6 +62,9 @@ export function Hero() {
             ID: {profile.handle} · STATUS: AVAILABLE
           </figcaption>
         </figure>
+      </div>
+      <div className="reveal relative mx-auto mt-12 max-w-3xl px-5">
+        <CyberOperationsCore />
       </div>
     </section>
   );
