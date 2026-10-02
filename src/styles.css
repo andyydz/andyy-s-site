@@ -231,7 +231,7 @@
 .soc-tilt {
   --tilt-x: 0deg;
   --tilt-y: 0deg;
-  transform: rotateX(calc(4deg + var(--tilt-x))) rotateY(calc(-6deg + var(--tilt-y)));
+  transform: rotateX(calc(3deg + var(--tilt-x))) rotateY(calc(-3deg + var(--tilt-y)));
   transform-style: preserve-3d;
   transition: transform 300ms ease-out;
   background-color: color-mix(in oklab, var(--color-card) 85%, transparent);
