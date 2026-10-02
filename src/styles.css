@@ -29,6 +29,7 @@
   --color-input: var(--border);
   --color-ring: var(--ring);
   --color-alert: var(--alert);
+  --color-info: var(--info);
   --shadow-terminal: 0 16px 50px -30px color-mix(in oklab, var(--primary) 35%, transparent);
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-sans: "Work Sans", ui-sans-serif, system-ui, sans-serif;
@@ -53,6 +54,8 @@
   --accent-foreground: oklch(0.13 0.02 150);
   /* #ff2b3f — intro name reveal only */
   --alert: oklch(0.635 0.245 22);
+  /* restrained cyan — telemetry / network info */
+  --info: oklch(0.76 0.09 205);
   --destructive: oklch(0.635 0.245 22);
   --border: oklch(0.885 0.235 146 / 22%);
   --border-strong: oklch(0.885 0.235 146 / 70%);
