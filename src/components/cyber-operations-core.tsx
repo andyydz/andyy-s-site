@@ -135,7 +135,7 @@ export function CyberOperationsCore() {
         </div>
 
         <div className="border-t border-border px-3 py-2 font-mono text-[10px] leading-relaxed sm:text-[11px]">
-          <p className="mb-1 tracking-[0.18em] text-muted-foreground">DEMO TELEMETRY · NOT LIVE DATA</p>
+          <p className="mb-1 tracking-[0.18em] text-muted-foreground">SIMULATED TELEMETRY · NOT LIVE DATA</p>
           <ul className="min-h-[4.6rem] space-y-0.5" aria-hidden="true">
             {shown.map((e) => (
               <li key={e.text} className="soc-line truncate">
