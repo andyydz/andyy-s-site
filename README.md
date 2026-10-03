@@ -64,7 +64,7 @@ Used for hands-on SOC, Blue Team, networking, and defensive-security practice.
 | Global Percentile | Top 4% |
 | Badges Earned | 23 |
 | Rooms Completed | 116 |
-| Current Streak | 61 days |
+| Highest Streak | 61 days |
 
 <details>
 <summary>Notable rooms and topics</summary>
