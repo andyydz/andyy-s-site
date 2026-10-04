@@ -261,7 +261,10 @@
   .soc-stage { perspective: 850px; }
   .soc-tilt { transform: rotateX(1.5deg) rotateY(-1.5deg); }
   .soc-plane { transform: translateZ(12px); }
+  .soc-link { animation: soc-link-flow 16s linear infinite; }
 }
+@keyframes soc-link-flow { to { stroke-dashoffset: -28; } }
+.soc-telemetry[data-phase="investigating"] .soc-line[data-level="alert"] .soc-event-text { color: var(--color-accent); }
 @media (prefers-reduced-motion: reduce) {
   .soc-tilt { transform: none; }
   .soc-pulse { display: none; }
