@@ -5,8 +5,9 @@ type Phase = { key: string; label: string; tone: "primary" | "accent" | "info" |
 const PHASES: Phase[] = [
   { key: "normal", label: "NORMAL", tone: "primary" },
   { key: "anomaly", label: "ANOMALY", tone: "accent" },
-  { key: "investigating", label: "INVESTIGATING", tone: "info" },
-  { key: "contained", label: "CONTAINED", tone: "alert" },
+  { key: "alert", label: "ALERT", tone: "alert" },
+  { key: "investigating", label: "INVESTIGATING", tone: "accent" },
+  { key: "contained", label: "CONTAINED", tone: "primary" },
 ];
 
 const EVENTS = [
@@ -36,18 +37,16 @@ const toneVar: Record<string, string> = {
 
 export function CyberOperationsCore() {
   const [phase, setPhase] = useState(0);
-  const [lines, setLines] = useState(3);
   const tiltRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
-      setLines(EVENTS.length);
+      setPhase(PHASES.length - 1);
       return;
     }
     const id = window.setInterval(() => {
       setPhase((p) => (p + 1) % PHASES.length);
-      setLines((n) => (n >= EVENTS.length ? 3 : n + 1));
     }, 2600);
     return () => window.clearInterval(id);
   }, []);
@@ -68,11 +67,16 @@ export function CyberOperationsCore() {
   };
 
   const current = PHASES[phase] ?? PHASES[0]!;
-  const shown = EVENTS.slice(Math.max(0, lines - 4), lines);
+  const shown = EVENTS.slice(0, Math.min(EVENTS.length, phase + 2)).slice(-4);
 
   return (
     <div className="soc-stage" onPointerMove={onMove} onPointerLeave={onLeave}>
-      <div ref={tiltRef} className="soc-tilt panel shadow-terminal">
+      <div
+        ref={tiltRef}
+        className="soc-tilt panel shadow-terminal"
+        data-phase={current.key}
+        data-alert={current.key === "alert" || undefined}
+      >
         <div className="flex items-center justify-between border-b border-border px-3 py-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground">
           <span>SOC.CORE // SECURITY SIMULATION</span>
           <span
@@ -107,6 +111,11 @@ export function CyberOperationsCore() {
                   <circle r="2.4" className="soc-pulse" style={{ fill: "var(--color-info)" }}>
                     <animateMotion dur={`${2.2 + i * 0.35}s`} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
                   </circle>
+                  {phase === 2 && s.id === "EDR" && (
+                    <circle cx={s.x} cy={s.y} r="3.2" className="soc-alert-particle">
+                      <animateMotion begin="0s" dur="1.2s" repeatCount="1" path={d} />
+                    </circle>
+                  )}
                   <rect x={s.x - 26} y={s.y - 9} width="52" height="18" className="soc-node" />
                   <text x={s.x} y={s.y + 3} textAnchor="middle" className="soc-label">
                     {s.id}
@@ -116,6 +125,7 @@ export function CyberOperationsCore() {
             })}
 
             <circle cx="160" cy="120" r="34" className="soc-ring" style={{ stroke: toneVar[current.tone] }} />
+            {phase === 2 && <circle cx="160" cy="120" r="25" className="soc-alert-ring" />}
             <circle cx="160" cy="120" r="24" className="soc-core" />
             <text x="160" y="117" textAnchor="middle" className="soc-label soc-label-strong">SOC</text>
             <text x="160" y="129" textAnchor="middle" className="soc-label">CORE</text>
@@ -134,13 +144,13 @@ export function CyberOperationsCore() {
           </ol>
         </div>
 
-        <div className="border-t border-border px-3 py-2 font-mono text-[10px] leading-relaxed sm:text-[11px]">
+        <div className="soc-telemetry border-t border-border px-3 py-2 font-mono text-[10px] leading-relaxed sm:text-[11px]" data-phase={current.key}>
           <p className="mb-1 tracking-[0.18em] text-muted-foreground">SIMULATED TELEMETRY · NOT LIVE DATA</p>
           <ul className="min-h-[4.6rem] space-y-0.5" aria-hidden="true">
             {shown.map((e) => (
-              <li key={e.text} className="soc-line truncate">
+              <li key={e.text} className="soc-line truncate" data-level={e.level.toLowerCase()}>
                 <span style={{ color: toneVar[e.tone] }}>[{e.level}]</span>{" "}
-                <span className="text-muted-foreground">{e.text}</span>
+                <span className="soc-event-text text-muted-foreground">{e.text}</span>
               </li>
             ))}
           </ul>

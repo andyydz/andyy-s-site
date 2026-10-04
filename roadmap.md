@@ -1,4 +1,8 @@
 # Portfolio refinement
+- [x] Add subtle mobile SOC depth and synchronized simulated alert sequence
+- [x] Show truthful contact receipt feedback after backend confirmation
+- [x] Frame experience, volunteering, and testimonial modules consistently
+- [x] Verify SOC lifecycle, reduced motion, contact states, and responsive layouts
 - [x] Refine navigation and active section state
 - [x] Refine hero and evidence stats
 - [x] Refine all content sections, contact, and footer

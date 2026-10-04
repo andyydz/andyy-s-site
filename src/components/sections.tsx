@@ -365,7 +365,7 @@ function TimelineList({ items }: { items: typeof profile.experience }) {
   return (
     <div className="space-y-4">
       {items.map((e, i) => (
-        <article key={e.role} className="timeline-entry reveal border-l border-border-strong pl-5 sm:pl-7" style={delay(i)}>
+        <article key={e.role} className="timeline-entry panel reveal p-5 pl-10 shadow-terminal sm:p-6 sm:pl-11" style={delay(i)}>
           <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
             <div className="min-w-0"><h3 className="font-mono text-base text-primary">{e.role}</h3><p className="mt-1 font-mono text-[11px] text-muted-foreground">{e.org}</p></div>
             <p className="font-mono text-[11px] text-accent sm:text-right">{e.period}</p>
@@ -405,7 +405,7 @@ export function Testimonial() {
   const t = profile.testimonial;
   return (
     <Section id="testimonial" heading="cat testimonial.txt">
-      <blockquote className="reveal max-w-4xl border-l-2 border-primary pl-5 sm:pl-8">
+      <blockquote className="panel reveal max-w-4xl border-l-2 border-primary p-5 shadow-terminal sm:p-7">
         <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
         <p className="mt-5 text-base leading-8 text-foreground italic sm:text-lg">“{t.quote}”</p>
         <footer className="mt-5 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
@@ -424,6 +424,12 @@ export function Contact() {
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
   const send = useServerFn(submitContact);
+
+  useEffect(() => {
+    if (!sent) return;
+    const timeout = window.setTimeout(() => setSent(false), 5000);
+    return () => window.clearTimeout(timeout);
+  }, [sent]);
 
   const copyEmail = async () => {
     try {
@@ -455,8 +461,9 @@ export function Contact() {
 
     setSending(true);
     try {
-      await send({ data: { name, email, message, company_url: honey } });
-      setSent(true);
+      const result = await send({ data: { name, email, message, company_url: honey } });
+      if (!result.ok) throw new Error("Could not confirm receipt. Please email directly instead.");
+      if (!honey) setSent(true);
       form.reset();
       void trackClick("contact-form-submit");
     } catch (err) {
@@ -557,9 +564,10 @@ export function Contact() {
             </ul>
           )}
           {sent && (
-            <p aria-live="polite" className="font-mono text-[11px] text-primary">
-              &gt; opening your mail client…
-            </p>
+            <div role="status" aria-live="polite" className="flex items-center gap-2 border border-primary/40 bg-primary/5 px-3 py-2.5 font-mono text-[11px] text-primary">
+              <Check aria-hidden="true" className="h-4 w-4 shrink-0" />
+              <span>[OK] MESSAGE RECEIVED SUCCESSFULLY</span>
+            </div>
           )}
           <Button
             type="submit"
