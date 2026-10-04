@@ -268,14 +268,20 @@
 .soc-telemetry[data-phase="contained"] .soc-line[data-level="alert"] .soc-event-text { color: var(--color-muted-foreground); }
 @media (prefers-reduced-motion: reduce) {
   .soc-tilt { transform: none; }
-  .soc-pulse { display: none; }
+  .soc-pulse,
   .soc-alert-particle,
   .soc-alert-ring { display: none; }
+  .soc-ring,
+  .soc-link,
+  .soc-line { animation: none; }
 }
 .force-reduced-motion .soc-tilt { transform: none; }
-.force-reduced-motion .soc-pulse { display: none; }
+.force-reduced-motion .soc-pulse,
 .force-reduced-motion .soc-alert-particle,
 .force-reduced-motion .soc-alert-ring { display: none; }
+.force-reduced-motion .soc-ring,
+.force-reduced-motion .soc-link,
+.force-reduced-motion .soc-line { animation: none; }
 
 /* ---------- scroll reveal ---------- */
 .reveal {
