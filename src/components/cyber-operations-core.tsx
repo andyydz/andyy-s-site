@@ -112,8 +112,8 @@ export function CyberOperationsCore() {
                     <animateMotion dur={`${2.2 + i * 0.35}s`} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
                   </circle>
                   {phase === 2 && s.id === "EDR" && (
-                    <circle r="3.2" className="soc-alert-particle">
-                      <animateMotion dur="1.2s" repeatCount="1" path={d} />
+                    <circle cx={s.x} cy={s.y} r="3.2" className="soc-alert-particle">
+                      <animateMotion begin="0s" dur="1.2s" repeatCount="1" path={d} />
                     </circle>
                   )}
                   <rect x={s.x - 26} y={s.y - 9} width="52" height="18" className="soc-node" />
