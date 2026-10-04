@@ -265,6 +265,7 @@
 }
 @keyframes soc-link-flow { to { stroke-dashoffset: -28; } }
 .soc-telemetry[data-phase="investigating"] .soc-line[data-level="alert"] .soc-event-text { color: var(--color-accent); }
+.soc-telemetry[data-phase="contained"] .soc-line[data-level="alert"] .soc-event-text { color: var(--color-muted-foreground); }
 @media (prefers-reduced-motion: reduce) {
   .soc-tilt { transform: none; }
   .soc-pulse { display: none; }
