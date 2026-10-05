@@ -38,6 +38,7 @@ const toneVar: Record<string, string> = {
 export function CyberOperationsCore() {
   const [phase, setPhase] = useState(0);
   const tiltRef = useRef<HTMLDivElement>(null);
+  const alertMotionRef = useRef<SVGAnimateMotionElement | null>(null);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -50,6 +51,10 @@ export function CyberOperationsCore() {
     }, 2600);
     return () => window.clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (phase === 2) alertMotionRef.current?.beginElement();
+  }, [phase]);
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = tiltRef.current;
@@ -117,7 +122,7 @@ export function CyberOperationsCore() {
                   </text>
                   {phase === 2 && s.id === "EDR" && (
                     <circle cx={s.x} cy={s.y} r="3.2" className="soc-alert-particle">
-                      <animateMotion begin="0s" dur="1.2s" repeatCount="1" path={d} />
+                      <animateMotion ref={alertMotionRef} begin="indefinite" dur="1.2s" repeatCount="1" path={d} />
                     </circle>
                   )}
                 </g>
