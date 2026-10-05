@@ -1,4 +1,5 @@
 # Portfolio refinement
+- [ ] Add Prajwal V Raghavendra's peer testimonial and normalize testimonial framing
 - [x] Add subtle mobile SOC depth and synchronized simulated alert sequence
 - [x] Show truthful contact receipt feedback after backend confirmation
 - [x] Frame experience, volunteering, and testimonial modules consistently
