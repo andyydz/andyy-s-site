@@ -38,6 +38,7 @@ const toneVar: Record<string, string> = {
 export function CyberOperationsCore() {
   const [phase, setPhase] = useState(0);
   const tiltRef = useRef<HTMLDivElement>(null);
+  const alertMotionRef = useRef<SVGAnimateMotionElement | null>(null);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -50,6 +51,10 @@ export function CyberOperationsCore() {
     }, 2600);
     return () => window.clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (phase === 2) alertMotionRef.current?.beginElement();
+  }, [phase]);
 
   const onMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const el = tiltRef.current;
@@ -111,15 +116,15 @@ export function CyberOperationsCore() {
                   <circle r="2.4" className="soc-pulse" style={{ fill: "var(--color-info)" }}>
                     <animateMotion dur={`${2.2 + i * 0.35}s`} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
                   </circle>
-                  {phase === 2 && s.id === "EDR" && (
-                    <circle cx={s.x} cy={s.y} r="3.2" className="soc-alert-particle">
-                      <animateMotion begin="0s" dur="1.2s" repeatCount="1" path={d} />
-                    </circle>
-                  )}
                   <rect x={s.x - 26} y={s.y - 9} width="52" height="18" className="soc-node" />
                   <text x={s.x} y={s.y + 3} textAnchor="middle" className="soc-label">
                     {s.id}
                   </text>
+                  {phase === 2 && s.id === "EDR" && (
+                    <circle cx={s.x} cy={s.y} r="3.2" className="soc-alert-particle">
+                      <animateMotion ref={alertMotionRef} begin="indefinite" dur="1.2s" repeatCount="1" path={d} />
+                    </circle>
+                  )}
                 </g>
               );
             })}
