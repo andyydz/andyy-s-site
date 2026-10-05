@@ -193,6 +193,14 @@ export const profile = {
     role: "Assistant Professor, St. Aloysius (Deemed to be University), Mangaluru",
     placeholder: false,
   },
+  peerTestimonial: {
+    quote:
+      "Andrew is a dedicated and curious cybersecurity enthusiast with a strong passion for learning and developing his skills. As a classmate, I’ve seen his commitment to cybersecurity and continuous improvement. I’m confident he’ll be a great asset to any cybersecurity team.",
+    author: "Prajwal V Raghavendra",
+    role: "Classmate / Peer",
+    title:
+      "Computer Science Student | Aspiring DevOps Engineer | Backend Development & AI Enthusiast | Seeking Internship",
+  },
 };
 
 export type Profile = typeof profile;

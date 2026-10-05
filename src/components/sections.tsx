@@ -402,16 +402,21 @@ export function Volunteering() {
 /* ---------- testimonial ---------- */
 
 export function Testimonial() {
-  const t = profile.testimonial;
+  const testimonials = [profile.testimonial, profile.peerTestimonial];
   return (
     <Section id="testimonial" heading="cat testimonial.txt">
-      <blockquote className="panel reveal max-w-4xl border-l-2 border-primary p-5 shadow-terminal sm:p-7">
-        <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
-        <p className="mt-5 text-base leading-8 text-foreground italic sm:text-lg">“{t.quote}”</p>
-        <footer className="mt-5 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
-          <span className="text-primary">{t.author}</span><br />{t.role}
-        </footer>
-      </blockquote>
+      <div className="grid max-w-4xl gap-4">
+        {testimonials.map((t) => (
+          <blockquote key={t.author} className="panel reveal p-5 shadow-terminal sm:p-6">
+            <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
+            <p className="mt-5 text-base leading-8 text-foreground italic sm:text-lg">“{t.quote}”</p>
+            <footer className="mt-5 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
+              <span className="text-primary">{t.author}</span><br />{t.role}
+              {"title" in t && <p className="mt-2">{t.title}</p>}
+            </footer>
+          </blockquote>
+        ))}
+      </div>
     </Section>
   );
 }
