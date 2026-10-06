@@ -115,7 +115,7 @@ export function CyberOperationsCore() {
               const d = `M${s.x} ${s.y} L160 120`;
               return (
                 <g key={s.id} className={s.mobile ? "" : "soc-desktop-only"}>
-                  <path d={d} className="soc-link" />
+                  <path d={d} className="soc-link" data-alert={phase === 2 && s.id === "EDR" ? true : undefined} />
                   <circle r="2.4" className="soc-pulse" style={{ fill: "var(--color-info)" }}>
                     <animateMotion dur={`${2.2 + i * 0.35}s`} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
                   </circle>
@@ -144,7 +144,8 @@ export function CyberOperationsCore() {
               <li
                 key={step}
                 className="soc-step"
-                data-active={phase >= i + 1 || undefined}
+                data-active={activeStep === i + 1 || undefined}
+                style={activeStep === i + 1 ? { color: toneVar[current.tone], borderColor: toneVar[current.tone] } : undefined}
               >
                 <span className="text-muted-foreground">0{i + 1}</span> {step}
               </li>
