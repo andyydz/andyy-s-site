@@ -242,7 +242,8 @@
 .soc-node { fill: var(--color-background); stroke: var(--color-border-strong); stroke-width: 0.8; rx: 2; }
 .soc-label { fill: var(--color-muted-foreground); font-family: var(--font-mono); font-size: 7.5px; letter-spacing: 0.08em; }
 .soc-label-strong { fill: var(--color-primary); font-size: 10px; font-weight: 700; }
-.soc-core { fill: color-mix(in oklab, var(--color-primary) 10%, var(--color-background)); stroke: var(--color-primary); stroke-width: 1; }
+.soc-core { fill: color-mix(in oklab, var(--color-primary) 18%, var(--color-background)); stroke: var(--color-primary); stroke-width: 1.4; filter: drop-shadow(0 0 6px color-mix(in oklab, var(--color-primary) 45%, transparent)); }
+.soc-link[data-alert] { stroke: color-mix(in oklab, var(--color-alert) 70%, transparent); }
 .soc-ring { fill: none; stroke-width: 1; stroke-dasharray: 2 5; opacity: 0.8; transition: stroke 300ms ease-out; transform-origin: 160px 120px; animation: soc-spin 24s linear infinite; }
 .soc-alert-ring { fill: none; stroke: var(--color-alert); stroke-width: 1.5; opacity: 0.8; transform-origin: 160px 120px; animation: soc-alert-pulse 900ms ease-out 1 both; }
 .soc-alert-particle { fill: var(--color-alert); filter: drop-shadow(0 0 2px var(--color-alert)); }
