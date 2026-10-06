@@ -4,7 +4,7 @@ type Phase = { key: string; label: string; tone: "primary" | "accent" | "info" |
 
 const PHASES: Phase[] = [
   { key: "normal", label: "NORMAL", tone: "primary" },
-  { key: "anomaly", label: "ANOMALY", tone: "accent" },
+  { key: "anomaly", label: "SUSPICIOUS EVENT", tone: "accent" },
   { key: "alert", label: "ALERT", tone: "alert" },
   { key: "investigating", label: "INVESTIGATING", tone: "accent" },
   { key: "contained", label: "CONTAINED", tone: "primary" },
@@ -21,11 +21,11 @@ const EVENTS = [
 
 // Source nodes around SOC core (viewBox 0 0 320 240, core at 160,120)
 const SOURCES = [
-  { id: "LOGS", x: 40, y: 40, mobile: true },
-  { id: "EDR", x: 40, y: 120, mobile: true },
-  { id: "IDS", x: 40, y: 200, mobile: false },
-  { id: "NETWORK", x: 280, y: 40, mobile: false },
-  { id: "CLOUD", x: 280, y: 200, mobile: true },
+  { id: "LOGS", x: 56, y: 56, mobile: true },
+  { id: "EDR", x: 60, y: 120, mobile: true },
+  { id: "IDS", x: 56, y: 184, mobile: false },
+  { id: "NETWORK", x: 264, y: 56, mobile: false },
+  { id: "CLOUD", x: 264, y: 184, mobile: true },
 ];
 
 const toneVar: Record<string, string> = {
