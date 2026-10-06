@@ -4,7 +4,7 @@ type Phase = { key: string; label: string; tone: "primary" | "accent" | "info" |
 
 const PHASES: Phase[] = [
   { key: "normal", label: "NORMAL", tone: "primary" },
-  { key: "anomaly", label: "ANOMALY", tone: "accent" },
+  { key: "anomaly", label: "SUSPICIOUS EVENT", tone: "accent" },
   { key: "alert", label: "ALERT", tone: "alert" },
   { key: "investigating", label: "INVESTIGATING", tone: "accent" },
   { key: "contained", label: "CONTAINED", tone: "primary" },
@@ -21,11 +21,11 @@ const EVENTS = [
 
 // Source nodes around SOC core (viewBox 0 0 320 240, core at 160,120)
 const SOURCES = [
-  { id: "LOGS", x: 40, y: 40, mobile: true },
-  { id: "EDR", x: 40, y: 120, mobile: true },
-  { id: "IDS", x: 40, y: 200, mobile: false },
-  { id: "NETWORK", x: 280, y: 40, mobile: false },
-  { id: "CLOUD", x: 280, y: 200, mobile: true },
+  { id: "LOGS", x: 56, y: 56, mobile: true },
+  { id: "EDR", x: 60, y: 120, mobile: true },
+  { id: "IDS", x: 56, y: 184, mobile: false },
+  { id: "NETWORK", x: 264, y: 56, mobile: false },
+  { id: "CLOUD", x: 264, y: 184, mobile: true },
 ];
 
 const toneVar: Record<string, string> = {
@@ -72,7 +72,10 @@ export function CyberOperationsCore() {
   };
 
   const current = PHASES[phase] ?? PHASES[0]!;
+  // Telemetry stays in sync with the lifecycle: the newest line always
+  // matches the current phase (alert line during ALERT, etc.).
   const shown = EVENTS.slice(0, Math.min(EVENTS.length, phase + 2)).slice(-4);
+  const activeStep = phase === 0 ? 0 : Math.min(phase, 3);
 
   return (
     <div className="soc-stage" onPointerMove={onMove} onPointerLeave={onLeave}>
@@ -112,7 +115,7 @@ export function CyberOperationsCore() {
               const d = `M${s.x} ${s.y} L160 120`;
               return (
                 <g key={s.id} className={s.mobile ? "" : "soc-desktop-only"}>
-                  <path d={d} className="soc-link" />
+                  <path d={d} className="soc-link" data-alert={phase === 2 && s.id === "EDR" ? true : undefined} />
                   <circle r="2.4" className="soc-pulse" style={{ fill: "var(--color-info)" }}>
                     <animateMotion dur={`${2.2 + i * 0.35}s`} repeatCount="indefinite" path={d} begin={`${i * 0.4}s`} />
                   </circle>
@@ -129,9 +132,9 @@ export function CyberOperationsCore() {
               );
             })}
 
-            <circle cx="160" cy="120" r="34" className="soc-ring" style={{ stroke: toneVar[current.tone] }} />
-            {phase === 2 && <circle cx="160" cy="120" r="25" className="soc-alert-ring" />}
-            <circle cx="160" cy="120" r="24" className="soc-core" />
+            <circle cx="160" cy="120" r="38" className="soc-ring" style={{ stroke: toneVar[current.tone] }} />
+            {phase === 2 && <circle cx="160" cy="120" r="29" className="soc-alert-ring" />}
+            <circle cx="160" cy="120" r="27" className="soc-core" />
             <text x="160" y="117" textAnchor="middle" className="soc-label soc-label-strong">SOC</text>
             <text x="160" y="129" textAnchor="middle" className="soc-label">CORE</text>
           </svg>
@@ -141,7 +144,8 @@ export function CyberOperationsCore() {
               <li
                 key={step}
                 className="soc-step"
-                data-active={phase >= i + 1 || undefined}
+                data-active={activeStep === i + 1 || undefined}
+                style={activeStep === i + 1 ? { color: toneVar[current.tone], borderColor: toneVar[current.tone] } : undefined}
               >
                 <span className="text-muted-foreground">0{i + 1}</span> {step}
               </li>
