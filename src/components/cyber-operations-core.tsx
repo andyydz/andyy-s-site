@@ -72,7 +72,10 @@ export function CyberOperationsCore() {
   };
 
   const current = PHASES[phase] ?? PHASES[0]!;
+  // Telemetry stays in sync with the lifecycle: the newest line always
+  // matches the current phase (alert line during ALERT, etc.).
   const shown = EVENTS.slice(0, Math.min(EVENTS.length, phase + 2)).slice(-4);
+  const activeStep = phase === 0 ? 0 : Math.min(phase, 3);
 
   return (
     <div className="soc-stage" onPointerMove={onMove} onPointerLeave={onLeave}>
@@ -129,9 +132,9 @@ export function CyberOperationsCore() {
               );
             })}
 
-            <circle cx="160" cy="120" r="34" className="soc-ring" style={{ stroke: toneVar[current.tone] }} />
-            {phase === 2 && <circle cx="160" cy="120" r="25" className="soc-alert-ring" />}
-            <circle cx="160" cy="120" r="24" className="soc-core" />
+            <circle cx="160" cy="120" r="38" className="soc-ring" style={{ stroke: toneVar[current.tone] }} />
+            {phase === 2 && <circle cx="160" cy="120" r="29" className="soc-alert-ring" />}
+            <circle cx="160" cy="120" r="27" className="soc-core" />
             <text x="160" y="117" textAnchor="middle" className="soc-label soc-label-strong">SOC</text>
             <text x="160" y="129" textAnchor="middle" className="soc-label">CORE</text>
           </svg>
