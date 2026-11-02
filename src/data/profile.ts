@@ -15,15 +15,14 @@ export const profile = {
     reddit: "https://www.reddit.com/user/RavenGhost6767/",
     resume: "/resume.pdf",
   },
-  about: `Curious about how systems work since I was a kid — that curiosity pointed itself at cybersecurity, specifically defense. I care about understanding why something breaks, not just patching it and moving on. Most days I'm in TryHackMe's SOC and Blue Team paths — log analysis, incident response sims, Splunk, Wireshark, Nmap — mapping attack behavior to MITRE ATT&CK and writing it up on GitHub as I go. Top 4% globally on TryHackMe, 116 rooms completed, 61-day streak. Looking for an internship or entry-level SOC Analyst role.`,
+  about: `Curious about how systems work since I was a kid — that curiosity pointed itself at cybersecurity, specifically defense. I care about understanding why something breaks, not just patching it and moving on. Most days I'm in TryHackMe's SOC and Blue Team paths — log analysis, incident response sims, Splunk, Wireshark, Nmap — mapping attack behavior to MITRE ATT&CK and writing it up on GitHub as I go. Top 4% globally on TryHackMe with a 78-day highest streak (last updated November 2, 2026). Looking for an internship or entry-level SOC Analyst role.`,
 
-  // Manual — TryHackMe has no stable public API.
+  // Manual — TryHackMe has no stable public API. Last checked November 2, 2026.
   stats: [
-    { label: "RANK", value: 95645, suffix: "", note: "top 4%" },
-    { label: "BADGES", value: 23, suffix: "" },
-    { label: "STREAK", value: 61, suffix: " days" },
-    { label: "ROOMS", value: 116, suffix: "" },
-  ],
+    { label: "GLOBAL RANK", display: "Top 4%" },
+    { label: "HIGHEST STREAK", value: 78, suffix: " days" },
+  ] as Array<{ label: string; display?: string; value?: number; suffix?: string; note?: string }>,
+  statsUpdated: "November 2, 2026",
 
   // Fallback log lines; live GitHub events are prepended when available.
   // Keep this short — recent, real events only. Skills live in the Skills section.
@@ -32,7 +31,7 @@ export const profile = {
     "[LOG] Pushed 3 commits to SOC-Portfolio",
     "[LOG] Earned: Cyber Security 101 Certificate (TryHackMe)",
     "[LOG] TryHackMe SOC Level 1 path — in progress",
-    "[LOG] 61-day streak maintained on TryHackMe",
+    "[LOG] 78-day highest streak on TryHackMe",
   ],
 
 
@@ -54,46 +53,50 @@ export const profile = {
 
   skillGroups: [
     {
-      name: "Core Security",
+      name: "Security & Networking Foundations",
       items: [
         "Threat Detection",
         "Incident Response",
-        "Cybersecurity",
-        "Information Security",
-        "Cyber Risk Management",
-        "Risk Assessment",
-        "Vulnerability Assessment",
         "Network Security",
         "Networking Fundamentals",
         "Web Application Security",
-        "Governance and Regulation",
-        "Phishing Prevention",
+        "Risk Assessment",
+        "Governance & Regulation",
+        "Phishing Analysis",
         "MITRE ATT&CK",
-        "OWASP Top 10 2025",
+        "OWASP Top 10",
+        "Digital Forensics Fundamentals",
+        "SIEM Concepts",
       ],
     },
     {
-      name: "Tools & Technologies",
+      name: "Tools — Labs & Exercises",
       items: [
-        "Splunk",
-        "Elastic Stack",
         "Wireshark",
         "Nmap",
+        "TCPDump",
+        "Splunk",
+        "Elastic Stack",
         "Snort",
-        "Metasploit",
-        "REmnu",
+        "Wazuh",
         "CyberChef",
         "Kali Linux",
         "Burp Suite",
-        "SIEM",
-        "Digital Forensics",
         "Log Analysis",
-        "Phishing Analytics Tools",
       ],
     },
     {
-      name: "Foundations",
-      items: ["Linux", "Virtualization", "Git", "GitHub", "HTML", "CSS", "Bootstrap", "Java", "SQL", "Python (basics)"],
+      name: "Programming & Technical Foundations",
+      items: ["Linux", "Java", "SQL", "Python (basics)", "Git", "GitHub", "HTML", "CSS", "Bootstrap", "Virtualization"],
+    },
+    {
+      name: "Currently Learning",
+      items: [
+        "TryHackMe SOC Level 1 path",
+        "Google Cybersecurity Certificate — Course 2",
+        "Wazuh detection engineering",
+        "Python security automation",
+      ],
     },
   ],
 
