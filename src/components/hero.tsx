@@ -52,8 +52,8 @@ export function Hero() {
           <img
             src={headshot}
             alt={`${profile.name}, aspiring SOC analyst`}
-            width={768}
-            height={960}
+            width={926}
+            height={1014}
             loading="eager"
             decoding="async"
             className="aspect-[4/5] w-full object-cover object-top"
