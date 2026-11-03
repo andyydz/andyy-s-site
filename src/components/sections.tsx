@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
+import { Link } from "@tanstack/react-router";
 import { profile } from "@/data/profile";
-import { submitContact } from "@/lib/tracking.functions";
 import { trackClick } from "@/lib/track";
 import { SiteQrCode } from "@/components/qr-code";
 import { useGitHubStats } from "@/hooks/use-github-stats";
 import { usePrefersReducedMotion, useReveal } from "@/hooks/use-reveal";
 import skull from "@/assets/skull.png";
-import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin, Send } from "lucide-react";
+import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /* ---------- shared bits ---------- */
@@ -109,7 +108,7 @@ function useCountUp(target: number, run: boolean) {
 }
 
 function StatCard({ stat, run, index }: { stat: (typeof profile.stats)[number]; run: boolean; index: number }) {
-  const value = useCountUp(stat.value, run);
+  const value = useCountUp(stat.value ?? 0, run);
   return (
     <div
       className="panel stat-card reveal px-4 py-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
@@ -117,8 +116,8 @@ function StatCard({ stat, run, index }: { stat: (typeof profile.stats)[number]; 
     >
       <p className="flex items-center justify-between font-mono text-[10px] tracking-[0.18em] text-muted-foreground"><span>TRYHACKME / {stat.label}</span><span className="status-dot" aria-hidden="true" /></p>
       <p className="mt-2 font-mono text-2xl text-primary sm:text-3xl">
-        {value.toLocaleString()}
-        {stat.suffix}
+        {stat.display ?? value.toLocaleString()}
+        {!stat.display && (stat.suffix ?? "")}
       </p>
       {stat.note && <p className="mt-1 font-mono text-[10px] text-accent">{stat.note}</p>}
     </div>
@@ -150,11 +149,18 @@ export function StatsBar() {
 
   return (
     <section ref={ref} aria-label="Verified learning statistics" className="mx-auto max-w-6xl px-5 py-12">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mx-auto grid max-w-2xl grid-cols-2 gap-3">
         {profile.stats.map((s, i) => (
           <StatCard key={s.label} stat={s} run={run} index={i} />
         ))}
       </div>
+
+      <p className="reveal mt-3 font-mono text-[10px] text-muted-foreground sm:text-[11px]">
+        <span className="text-primary">stats last updated:</span> {profile.statsUpdated} ·{" "}
+        <a href={profile.links.tryhackme} target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline">
+          source: tryhackme.com/p/andyydz57
+        </a>
+      </p>
 
       <div className="panel reveal mt-3 px-4 py-3 font-mono text-[11px] text-muted-foreground sm:text-xs">
         <span className="text-primary">github/{profile.handle}</span>{" "}
@@ -266,8 +272,12 @@ export function Projects() {
           >
             <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
               <div className="min-w-0">
-                <p className="font-mono text-[10px] text-accent">CASE FILE {String(projectIndex + 1).padStart(2, "0")} · FEATURED</p>
+                <p className="font-mono text-[10px] text-accent">
+                  CASE FILE {String(projectIndex + 1).padStart(2, "0")} ·{" "}
+                  {f.status ? f.status.toUpperCase() : "FEATURED"}
+                </p>
                 <h3 className="mt-2 font-mono text-base leading-snug text-primary sm:text-lg">{f.name}</h3>
+                <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground">{f.description}</p>
               </div>
               <Button asChild variant="outline" size="sm" className="h-10 shrink-0 justify-self-start rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary sm:justify-self-auto">
                 <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
