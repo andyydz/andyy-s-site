@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FileDown, Menu, X } from "lucide-react";
-import skull from "@/assets/skull.png";
+import logoAsset from "@/assets/logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 
 const SECTIONS = [
@@ -55,7 +55,7 @@ export function SiteNav() {
       >
         <a href="#top" className="flex min-w-0 items-center gap-2 font-mono text-sm text-foreground">
           <img
-            src={skull}
+            src={logoAsset.url}
             alt=""
             width={30}
             height={30}
