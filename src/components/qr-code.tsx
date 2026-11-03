@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 
-/** Terminal-styled QR code for the live site URL, rendered client-side to a data URL. */
-export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
+/** Terminal-styled QR code rendered client-side to a data URL. */
+export function SiteQrCode({ targetUrl, caption }: { targetUrl: string; caption: string }) {
   const [src, setSrc] = useState<string | null>(null);
-  const [url, setUrl] = useState(fallbackUrl);
 
   useEffect(() => {
     let cancelled = false;
-    const target = window.location.origin + "/";
-    setUrl(target);
     void (async () => {
       try {
         const QRCode = (await import("qrcode")).default;
-        const dataUrl = await QRCode.toDataURL(target, {
+        const dataUrl = await QRCode.toDataURL(targetUrl, {
           margin: 1,
           width: 220,
           errorCorrectionLevel: "M",
@@ -20,13 +17,13 @@ export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
         });
         if (!cancelled) setSrc(dataUrl);
       } catch {
-        /* QR unavailable — the printed URL below still works */
+        /* QR unavailable — the printed caption still explains the target */
       }
     })();
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [targetUrl]);
 
   return (
     <figure className="flex items-center gap-4 border-l border-border pl-5">
@@ -34,7 +31,7 @@ export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
         {src ? (
           <img
             src={src}
-            alt={`QR code linking to ${url}`}
+            alt={`QR code linking to ${targetUrl}`}
             width={88}
             height={88}
             className="block h-[88px] w-[88px]"
@@ -44,9 +41,9 @@ export function SiteQrCode({ fallbackUrl }: { fallbackUrl: string }) {
         )}
       </div>
       <figcaption className="max-w-40 font-mono text-[10px] leading-relaxed text-muted-foreground">
-        <span className="text-primary">$ qrencode -o site.png</span>
+        <span className="text-primary">$ qrencode -o linkedin.png</span>
         <br />
-        scan to open this portfolio
+        {caption}
       </figcaption>
     </figure>
   );

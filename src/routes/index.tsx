@@ -12,6 +12,7 @@ import {
   Experience,
   LogStrip,
   Projects,
+  Recommendation,
   Skills,
   SiteFooter,
   StatsBar,
@@ -24,7 +25,7 @@ const SITE_URL = "https://andyy-s-site.vercel.app";
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 const TITLE = "Andrew D'Souza — SOC Analyst Portfolio | Threat Detection";
 const DESCRIPTION =
-  "Cybersecurity portfolio of Andrew Vinston D'Souza (Andyy): SOC analysis, threat detection and incident response projects using Splunk, Wireshark and MITRE ATT&CK.";
+  "Entry-level cybersecurity portfolio of Andrew Vinston D'Souza (Andyy): SOC learning labs and projects in threat detection, incident response, Splunk, Wireshark and MITRE ATT&CK.";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -122,6 +123,7 @@ function Index() {
         <Skills />
         <Projects />
         <Certifications />
+        <Recommendation />
         <Experience />
         <Volunteering />
         <Testimonial />

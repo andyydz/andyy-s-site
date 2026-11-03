@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as DocumentsDocRouteImport } from './routes/documents.$doc'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocumentsDocRoute = DocumentsDocRouteImport.update({
+  id: '/documents/$doc',
+  path: '/documents/$doc',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/documents/$doc': typeof DocumentsDocRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/documents/$doc': typeof DocumentsDocRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/documents/$doc': typeof DocumentsDocRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/sitemap.xml'
+  fullPaths: '/' | '/admin' | '/sitemap.xml' | '/documents/$doc'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/sitemap.xml'
-  id: '__root__' | '/' | '/admin' | '/sitemap.xml'
+  to: '/' | '/admin' | '/sitemap.xml' | '/documents/$doc'
+  id: '__root__' | '/' | '/admin' | '/sitemap.xml' | '/documents/$doc'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  DocumentsDocRoute: typeof DocumentsDocRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/documents/$doc': {
+      id: '/documents/$doc'
+      path: '/documents/$doc'
+      fullPath: '/documents/$doc'
+      preLoaderRoute: typeof DocumentsDocRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  DocumentsDocRoute: DocumentsDocRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

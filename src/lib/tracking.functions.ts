@@ -46,15 +46,6 @@ async function countViewsSince(hash: string, minutes: number) {
   return count ?? 0;
 }
 
-async function countSubmissionsSince(hash: string, minutes: number) {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { count } = await supabaseAdmin
-    .from("contact_submissions")
-    .select("id", { count: "exact", head: true })
-    .eq("sender_hash", hash)
-    .gte("created_at", windowStart(minutes));
-  return count ?? 0;
-}
 
 export const logPageView = createServerFn({ method: "POST" })
   .inputValidator((data) =>
@@ -98,35 +89,3 @@ export const logLinkClick = createServerFn({ method: "POST" })
     }
   });
 
-const contactSchema = z.object({
-  name: z.string().trim().min(2).max(80),
-  email: z.string().trim().email().max(254),
-  message: z.string().trim().min(10).max(1000),
-  company_url: z.string().max(200).optional(),
-});
-
-export const submitContact = createServerFn({ method: "POST" })
-  .inputValidator((data) => contactSchema.parse(data))
-  .handler(async ({ data }) => {
-    // Honeypot: silently accept, never store.
-    if (data.company_url) return { ok: true as const };
-
-    const hash = await visitorHash();
-    if ((await countSubmissionsSince(hash, 60)) >= 3) {
-      throw new Error("Too many messages sent from this connection. Please try again later.");
-    }
-
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("contact_submissions").insert({
-      name: data.name,
-      email: data.email,
-      message: data.message,
-      sender_hash: hash,
-      emailed: false,
-    });
-    if (error) {
-      console.error("[contact] insert failed");
-      throw new Error("Could not deliver your message. Please email directly instead.");
-    }
-    return { ok: true as const };
-  });

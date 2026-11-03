@@ -100,40 +100,62 @@ export const profile = {
     },
   ],
 
-  featuredProject: {
-    name: "Security Incident & Asset Tracker",
-    repo: "https://github.com/andyydz/security-incident-asset-tracker",
-    problem:
-      "Small IT teams often track assets in spreadsheets and log incidents in chat, so nothing links a compromised host to the incident history behind it.",
-    approach:
-      "Built a Java + JDBC console application on MariaDB with a relational schema linking Assets↔Incidents, a DAO layer for data access, and PreparedStatement used throughout to prevent SQL injection.",
-    outcome:
-      "Assets and incidents are queryable together, with severity classification on every incident. Built and tested end to end on Kali Linux.",
-    next: "Add analyst-facing reporting queries and export incident timelines mapped to MITRE ATT&CK techniques.",
-  },
-
   featuredProjects: [
+    {
+      name: "Sentinel SOC Lab",
+      repo: "https://github.com/andyydz/SOC-Portfolio",
+      status: "In Progress",
+      description:
+        "An evidence-driven Security Operations Center lab built around Wazuh, Linux endpoints, File Integrity Monitoring, detection engineering, and security-event investigation.",
+      problem:
+        "Building practical SOC investigation skills requires more than collecting alerts. Detection behavior must be tested, supporting evidence reviewed, and limitations documented.",
+      approach:
+        "Built an isolated Wazuh-based lab with a Linux endpoint. Configured File Integrity Monitoring and conducted controlled file-activity tests. Reviewed manager alerts, endpoint activity, and supporting logs while documenting investigation evidence in CASE-001.",
+      outcome:
+        "Established Wazuh manager-to-agent communication and validated file-integrity monitoring. Documented modification, creation, and deletion observations. During CASE-001 validation, built-in Wazuh rules detected file creation and deletion, while custom rule 100002 did not trigger for those events. The findings identified detection coverage requiring further engineering and retesting.",
+      next: "Improve custom detection coverage, add repeatable regression tests, develop additional investigation cases, document response workflows, and measure detection effectiveness. Later phases will explore broader attack scenarios and purple-team validation.",
+    },
+    {
+      name: "Python SOC Automation Engine",
+      repo: "https://github.com/andyydz/python-soc-automation",
+      status: "In Development",
+      description:
+        "A Python-based security automation project that parses and validates Wazuh alerts, extracts key detection metadata, and establishes a foundation for explainable SOC triage and structured reporting.",
+      problem:
+        "Wazuh alerts contain structured and sometimes nested JSON data. Analysts and automation scripts need a consistent way to validate and extract the information required for further investigation.",
+      approach:
+        "Developed an initial Python alert parser that validates incoming alert structures and extracts rule IDs, severity levels, agent information, and rule descriptions. Added handling for missing fields and an automated pytest test suite.",
+      outcome:
+        "Implemented the initial Wazuh alert parser, input-structure validation, default handling for missing data, and six parser test cases documented in the repository.",
+      next: "Expand parser coverage with additional edge cases, improve data normalization, introduce explainable alert-prioritization logic, and develop structured investigation reporting. Explore integration with exported Wazuh alerts as the project matures.",
+    },
     {
       name: "Security Incident & Asset Tracker",
       repo: "https://github.com/andyydz/security-incident-asset-tracker",
+      status: "",
+      description:
+        "A console-based Java, JDBC, and MariaDB application for managing IT assets and recording security incidents.",
       problem:
-        "Small IT teams often track assets in spreadsheets and log incidents in chat, so nothing links a compromised host to the incident history behind it.",
+        "Keeping track of IT assets and associated security incidents requires structured records and reliable relationships between assets and incident reports.",
       approach:
-        "Built a Java + JDBC console application on MariaDB with a relational schema linking Assets↔Incidents, a DAO layer for data access, and PreparedStatement used throughout to prevent SQL injection.",
+        "Developed a Java console application using JDBC and MariaDB. Implemented asset management and incident-record operations with database relationships and structured data access.",
       outcome:
-        "Assets and incidents are queryable together, with severity classification on every incident. Built and tested end to end on Kali Linux.",
-      next: "Add analyst-facing reporting queries and export incident timelines mapped to MITRE ATT&CK techniques.",
+        "Created an application supporting asset creation, viewing, updating, and deletion, together with incident logging, severity classification, and incident-status tracking.",
+      next: "Improve input validation, strengthen reporting and filtering, expand test coverage, and explore a more user-friendly interface.",
     },
     {
-      name: "SOC-Portfolio",
-      repo: "https://github.com/andyydz/SOC-Portfolio",
+      name: "Bank Secure Network",
+      repo: "https://github.com/andyydz/bank-secure-network",
+      status: "",
+      description:
+        "A Cisco Packet Tracer networking project demonstrating segmented network design using VLANs, routing, and access-control concepts.",
       problem:
-        "Blue Team learning is easy to collect and hard to prove — labs get completed and forgotten, with no evidence of how a detection was reached.",
+        "A banking-style network requires logical separation of departments and services to reduce unnecessary communication and support controlled network access.",
       approach:
-        "Built a repo of end-to-end SOC investigations: Splunk and ELK queries over Windows Event Logs, Wazuh alert triage, and packet captures, each documented as alert → pivot → evidence → verdict and mapped to MITRE ATT&CK techniques.",
+        "Designed a Cisco Packet Tracer topology with separate VLANs for ADMIN, EMPLOYEE, ATM, and SERVER segments. Configured routing and planned access-control restrictions between network segments.",
       outcome:
-        "A reviewable body of investigations covering phishing analysis, brute-force and persistence detection, and log-source coverage gaps — reproducible by anyone reading the writeups.",
-      next: "Add detection rules as reusable Sigma signatures and cover cloud/identity log sources alongside endpoint telemetry.",
+        "Created a segmented network topology with separate logical network areas and supporting server infrastructure in Packet Tracer.",
+      next: "Complete and verify access-control policies, perform inter-VLAN connectivity and isolation tests, document the results, and improve network-security validation.",
     },
   ],
 
@@ -156,22 +178,35 @@ export const profile = {
   ],
 
   certifications: [
-    { name: "Foundations of Cybersecurity", issuer: "Google / Coursera", date: "Jun 2026" },
-    { name: "Play It Safe: Manage Security Risks", issuer: "Google / Coursera", date: "Jul 2026" },
-    { name: "Pre Security Certificate", issuer: "TryHackMe", date: "May 2026" },
-    { name: "Cyber Security 101 Certificate", issuer: "TryHackMe", date: "Jul 2026" },
+    { name: "Pre Security — Learning Path", issuer: "TryHackMe", date: "May 2026", slug: "pre-security" },
+    { name: "Cyber Security 101 — Learning Path", issuer: "TryHackMe", date: "Jul 2026", slug: "cyber-security-101" },
+    { name: "Network Defense — Course Completion", issuer: "Cisco Networking Academy", date: "Nov 2026", slug: "network-defense" },
   ],
   certsInProgress:
     "Currently working on: Google Cybersecurity Certificate — Course 2, and TryHackMe's SOC Level 1 path",
 
+  credly: {
+    url: "https://www.credly.com/users/andyy-dz",
+    badges: ["AWS Educate — Getting Started with Networking", "Cisco — Network Defense"],
+  },
+
+  recommendationLetter: {
+    slug: "recommendation-letter",
+    title: "Letter of Recommendation",
+    author: "Jovita Monis",
+    role: "Technical Support Engineer · Tier III",
+    org: "UnifyCX",
+  },
+
   experience: [
     {
-      role: "SOC & Blue Team Trainee",
-      org: "Self-Directed Practice, TryHackMe",
+      role: "Independent Cybersecurity Learning & Labs",
+      org: "Self-directed practice · TryHackMe SOC Level 1 & Blue Team paths",
       period: "Feb 2026 – Present",
       points: [
         "Practicing SOC workflows via SOC Level 1, Pre Security, and Blue Team paths.",
         "Phishing email analysis, network traffic inspection, threat intel correlation.",
+        "Building the Sentinel SOC lab: Wazuh monitoring, File Integrity Monitoring, and documented investigation cases.",
       ],
     },
   ],

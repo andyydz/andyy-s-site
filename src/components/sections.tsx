@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
+import { Link } from "@tanstack/react-router";
 import { profile } from "@/data/profile";
-import { submitContact } from "@/lib/tracking.functions";
 import { trackClick } from "@/lib/track";
 import { SiteQrCode } from "@/components/qr-code";
 import { useGitHubStats } from "@/hooks/use-github-stats";
 import { usePrefersReducedMotion, useReveal } from "@/hooks/use-reveal";
 import skull from "@/assets/skull.png";
-import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin, Send } from "lucide-react";
+import { Check, ChevronDown, Copy, ExternalLink, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /* ---------- shared bits ---------- */
@@ -109,7 +108,7 @@ function useCountUp(target: number, run: boolean) {
 }
 
 function StatCard({ stat, run, index }: { stat: (typeof profile.stats)[number]; run: boolean; index: number }) {
-  const value = useCountUp(stat.value, run);
+  const value = useCountUp(stat.value ?? 0, run);
   return (
     <div
       className="panel stat-card reveal px-4 py-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
@@ -117,8 +116,8 @@ function StatCard({ stat, run, index }: { stat: (typeof profile.stats)[number]; 
     >
       <p className="flex items-center justify-between font-mono text-[10px] tracking-[0.18em] text-muted-foreground"><span>TRYHACKME / {stat.label}</span><span className="status-dot" aria-hidden="true" /></p>
       <p className="mt-2 font-mono text-2xl text-primary sm:text-3xl">
-        {value.toLocaleString()}
-        {stat.suffix}
+        {stat.display ?? value.toLocaleString()}
+        {!stat.display && (stat.suffix ?? "")}
       </p>
       {stat.note && <p className="mt-1 font-mono text-[10px] text-accent">{stat.note}</p>}
     </div>
@@ -150,11 +149,18 @@ export function StatsBar() {
 
   return (
     <section ref={ref} aria-label="Verified learning statistics" className="mx-auto max-w-6xl px-5 py-12">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mx-auto grid max-w-2xl grid-cols-2 gap-3">
         {profile.stats.map((s, i) => (
           <StatCard key={s.label} stat={s} run={run} index={i} />
         ))}
       </div>
+
+      <p className="reveal mt-3 font-mono text-[10px] text-muted-foreground sm:text-[11px]">
+        <span className="text-primary">stats last updated:</span> {profile.statsUpdated} ·{" "}
+        <a href={profile.links.tryhackme} target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline">
+          source: tryhackme.com/p/andyydz57
+        </a>
+      </p>
 
       <div className="panel reveal mt-3 px-4 py-3 font-mono text-[11px] text-muted-foreground sm:text-xs">
         <span className="text-primary">github/{profile.handle}</span>{" "}
@@ -266,8 +272,12 @@ export function Projects() {
           >
             <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
               <div className="min-w-0">
-                <p className="font-mono text-[10px] text-accent">CASE FILE {String(projectIndex + 1).padStart(2, "0")} · FEATURED</p>
+                <p className="font-mono text-[10px] text-accent">
+                  CASE FILE {String(projectIndex + 1).padStart(2, "0")} ·{" "}
+                  {f.status ? f.status.toUpperCase() : "FEATURED"}
+                </p>
                 <h3 className="mt-2 font-mono text-base leading-snug text-primary sm:text-lg">{f.name}</h3>
+                <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground">{f.description}</p>
               </div>
               <Button asChild variant="outline" size="sm" className="h-10 shrink-0 justify-self-start rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary sm:justify-self-auto">
                 <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
@@ -324,37 +334,81 @@ export function Projects() {
 export function Certifications() {
   return (
     <Section id="certifications" heading="cat certifications.tsv">
-      <div className="panel reveal overflow-hidden">
-        <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] font-mono text-xs">
-          <thead>
-            <tr className="border-b border-border text-left text-muted-foreground">
-              <th scope="col" className="px-4 py-2 font-normal">
-                CERTIFICATION
-              </th>
-              <th scope="col" className="px-4 py-2 font-normal">
-                ISSUER
-              </th>
-              <th scope="col" className="px-4 py-2 font-normal">
-                DATE
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {profile.certifications.map((c) => (
-              <tr key={c.name} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/40">
-                <td className="px-4 py-4 text-foreground"><span className="mr-2 text-primary">✓</span>{c.name}</td>
-                <td className="px-4 py-4 text-muted-foreground">{c.issuer}</td>
-                <td className="px-4 py-4 text-accent">{c.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {profile.certifications.map((c, i) => (
+          <article
+            key={c.slug}
+            className="panel reveal flex flex-col p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+            style={delay(i)}
+          >
+            <p className="font-mono text-[10px] text-accent">CREDENTIAL {String(i + 1).padStart(2, "0")} · VERIFIED</p>
+            <h3 className="mt-2 font-mono text-sm leading-snug text-primary">{c.name}</h3>
+            <p className="mt-1 font-mono text-[11px] text-muted-foreground">{c.issuer} · {c.date}</p>
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+            >
+              <Link to="/documents/$doc" params={{ doc: c.slug }}>
+                view document<ExternalLink aria-hidden="true" />
+              </Link>
+            </Button>
+          </article>
+        ))}
       </div>
       <p className="reveal mt-4 border-l-2 border-accent bg-secondary/30 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
         <span className="text-accent">IN PROGRESS /</span> {profile.certsInProgress}
       </p>
+      <div className="panel reveal mt-4 p-5 sm:p-6">
+        <p className="font-mono text-[10px] text-accent">CREDLY / VERIFIED DIGITAL BADGES</p>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {profile.credly.badges.map((b) => (
+            <li key={b} className="border border-border bg-secondary/40 px-2.5 py-1.5 font-mono text-[10px] text-foreground">
+              {b}
+            </li>
+          ))}
+        </ul>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+        >
+          <a href={profile.credly.url} target="_blank" rel="noopener noreferrer">
+            View All Credly Badges<ExternalLink aria-hidden="true" />
+          </a>
+        </Button>
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- letter of recommendation ---------- */
+
+export function Recommendation() {
+  const letter = profile.recommendationLetter;
+  return (
+    <Section id="recommendation" heading="cat recommendation.pdf">
+      <article className="panel reveal flex flex-col gap-4 p-5 shadow-terminal sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] text-accent">LETTER OF RECOMMENDATION · PDF</p>
+          <h3 className="mt-2 font-mono text-base text-primary">Recommendation for Andrew Vinston D&apos;Souza</h3>
+          <p className="mt-1 font-mono text-[11px] leading-relaxed text-muted-foreground">
+            Authored by <span className="text-foreground">{letter.author}</span> — {letter.role}, {letter.org}
+          </p>
+        </div>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="h-11 shrink-0 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground"
+        >
+          <Link to="/documents/$doc" params={{ doc: letter.slug }}>
+            View Letter<ExternalLink aria-hidden="true" />
+          </Link>
+        </Button>
+      </article>
     </Section>
   );
 }
@@ -424,17 +478,7 @@ export function Testimonial() {
 /* ---------- contact ---------- */
 
 export function Contact() {
-  const [errors, setErrors] = useState<string[]>([]);
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
-  const send = useServerFn(submitContact);
-
-  useEffect(() => {
-    if (!sent) return;
-    const timeout = window.setTimeout(() => setSent(false), 5000);
-    return () => window.clearTimeout(timeout);
-  }, [sent]);
 
   const copyEmail = async () => {
     try {
@@ -446,41 +490,9 @@ export function Contact() {
     }
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const honey = String(fd.get("company_url") ?? "");
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const message = String(fd.get("message") ?? "").trim();
-
-    const errs: string[] = [];
-    if (name.length < 2 || name.length > 80) errs.push("name must be 2–80 characters");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
-      errs.push("valid email required");
-    if (message.length < 10 || message.length > 1000) errs.push("message must be 10–1000 characters");
-    setErrors(errs);
-    setSent(false);
-    if (errs.length) return;
-
-    setSending(true);
-    try {
-      const result = await send({ data: { name, email, message, company_url: honey } });
-      if (!result.ok) throw new Error("Could not confirm receipt. Please email directly instead.");
-      if (!honey) setSent(true);
-      form.reset();
-      void trackClick("contact-form-submit");
-    } catch (err) {
-      setErrors([err instanceof Error ? err.message : "could not send message"]);
-    } finally {
-      setSending(false);
-    }
-  };
-
   return (
     <Section id="contact" heading="./contact.sh">
-      <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+      <div className="mx-auto max-w-3xl">
         <div className="panel reveal p-5 sm:p-6">
           <p className="mb-5 font-mono text-xs text-accent">SECURE CHANNELS</p>
           <ul className="space-y-1 font-mono text-xs sm:text-sm">
@@ -523,65 +535,6 @@ export function Contact() {
           ))}
           </ul>
         </div>
-
-        <form onSubmit={onSubmit} className="panel reveal no-print space-y-4 p-5 sm:p-6" noValidate>
-          <div><p className="font-mono text-xs text-accent">MESSAGE REQUEST</p><p className="mt-1 text-xs text-muted-foreground">Fields are validated before submission.</p></div>
-          <div className="hidden" aria-hidden="true">
-            <label htmlFor="company_url">Company URL</label>
-            <input id="company_url" name="company_url" tabIndex={-1} autoComplete="off" />
-          </div>
-          {[
-            { id: "name", label: "name", type: "text", max: 80 },
-            { id: "email", label: "email", type: "email", max: 254 },
-          ].map((f) => (
-            <div key={f.id}>
-              <label htmlFor={f.id} className="font-mono text-[11px] uppercase text-foreground">
-                {f.label}
-              </label>
-              <input
-                id={f.id}
-                name={f.id}
-                type={f.type}
-                maxLength={f.max}
-                required
-                className="mt-2 min-h-11 w-full border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-              />
-            </div>
-          ))}
-          <div>
-            <label htmlFor="message" className="font-mono text-[11px] uppercase text-foreground">
-              message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={4}
-              maxLength={1000}
-              required
-              className="mt-2 w-full resize-y border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-            />
-          </div>
-          {errors.length > 0 && (
-            <ul aria-live="polite" className="font-mono text-[11px] text-destructive">
-              {errors.map((e) => (
-                <li key={e}>! {e}</li>
-              ))}
-            </ul>
-          )}
-          {sent && (
-            <div role="status" aria-live="polite" className="flex items-center gap-2 border border-primary/40 bg-primary/5 px-3 py-2.5 font-mono text-[11px] text-primary">
-              <Check aria-hidden="true" className="h-4 w-4 shrink-0" />
-              <span>[OK] MESSAGE RECEIVED SUCCESSFULLY</span>
-            </div>
-          )}
-          <Button
-            type="submit"
-            disabled={sending}
-            className="h-11 rounded-sm font-mono text-xs active:translate-y-px"
-          >
-            <Send aria-hidden="true" />{sending ? "sending…" : "send message"}
-          </Button>
-        </form>
       </div>
     </Section>
   );
@@ -628,7 +581,7 @@ export function SiteFooter() {
             ))}
           </ul>
         </div>
-        <SiteQrCode fallbackUrl="https://andyydz.lovable.app/" />
+        <SiteQrCode targetUrl={profile.links.linkedin} caption="scan to connect on linkedin" />
       </div>
     </footer>
   );
