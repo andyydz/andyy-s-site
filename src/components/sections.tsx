@@ -492,7 +492,7 @@ export function Contact() {
 
   return (
     <Section id="contact" heading="./contact.sh">
-      <div className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
+      <div className="mx-auto max-w-3xl">
         <div className="panel reveal p-5 sm:p-6">
           <p className="mb-5 font-mono text-xs text-accent">SECURE CHANNELS</p>
           <ul className="space-y-1 font-mono text-xs sm:text-sm">
@@ -535,65 +535,6 @@ export function Contact() {
           ))}
           </ul>
         </div>
-
-        <form onSubmit={onSubmit} className="panel reveal no-print space-y-4 p-5 sm:p-6" noValidate>
-          <div><p className="font-mono text-xs text-accent">MESSAGE REQUEST</p><p className="mt-1 text-xs text-muted-foreground">Fields are validated before submission.</p></div>
-          <div className="hidden" aria-hidden="true">
-            <label htmlFor="company_url">Company URL</label>
-            <input id="company_url" name="company_url" tabIndex={-1} autoComplete="off" />
-          </div>
-          {[
-            { id: "name", label: "name", type: "text", max: 80 },
-            { id: "email", label: "email", type: "email", max: 254 },
-          ].map((f) => (
-            <div key={f.id}>
-              <label htmlFor={f.id} className="font-mono text-[11px] uppercase text-foreground">
-                {f.label}
-              </label>
-              <input
-                id={f.id}
-                name={f.id}
-                type={f.type}
-                maxLength={f.max}
-                required
-                className="mt-2 min-h-11 w-full border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-              />
-            </div>
-          ))}
-          <div>
-            <label htmlFor="message" className="font-mono text-[11px] uppercase text-foreground">
-              message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={4}
-              maxLength={1000}
-              required
-              className="mt-2 w-full resize-y border border-border bg-background px-3 py-2 font-mono text-xs text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
-            />
-          </div>
-          {errors.length > 0 && (
-            <ul aria-live="polite" className="font-mono text-[11px] text-destructive">
-              {errors.map((e) => (
-                <li key={e}>! {e}</li>
-              ))}
-            </ul>
-          )}
-          {sent && (
-            <div role="status" aria-live="polite" className="flex items-center gap-2 border border-primary/40 bg-primary/5 px-3 py-2.5 font-mono text-[11px] text-primary">
-              <Check aria-hidden="true" className="h-4 w-4 shrink-0" />
-              <span>[OK] MESSAGE RECEIVED SUCCESSFULLY</span>
-            </div>
-          )}
-          <Button
-            type="submit"
-            disabled={sending}
-            className="h-11 rounded-sm font-mono text-xs active:translate-y-px"
-          >
-            <Send aria-hidden="true" />{sending ? "sending…" : "send message"}
-          </Button>
-        </form>
       </div>
     </Section>
   );
@@ -640,7 +581,7 @@ export function SiteFooter() {
             ))}
           </ul>
         </div>
-        <SiteQrCode fallbackUrl="https://andyydz.lovable.app/" />
+        <SiteQrCode targetUrl={profile.links.linkedin} caption="scan to connect on linkedin" />
       </div>
     </footer>
   );
