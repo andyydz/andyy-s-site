@@ -334,37 +334,81 @@ export function Projects() {
 export function Certifications() {
   return (
     <Section id="certifications" heading="cat certifications.tsv">
-      <div className="panel reveal overflow-hidden">
-        <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] font-mono text-xs">
-          <thead>
-            <tr className="border-b border-border text-left text-muted-foreground">
-              <th scope="col" className="px-4 py-2 font-normal">
-                CERTIFICATION
-              </th>
-              <th scope="col" className="px-4 py-2 font-normal">
-                ISSUER
-              </th>
-              <th scope="col" className="px-4 py-2 font-normal">
-                DATE
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {profile.certifications.map((c) => (
-              <tr key={c.name} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/40">
-                <td className="px-4 py-4 text-foreground"><span className="mr-2 text-primary">✓</span>{c.name}</td>
-                <td className="px-4 py-4 text-muted-foreground">{c.issuer}</td>
-                <td className="px-4 py-4 text-accent">{c.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {profile.certifications.map((c, i) => (
+          <article
+            key={c.slug}
+            className="panel reveal flex flex-col p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+            style={delay(i)}
+          >
+            <p className="font-mono text-[10px] text-accent">CREDENTIAL {String(i + 1).padStart(2, "0")} · VERIFIED</p>
+            <h3 className="mt-2 font-mono text-sm leading-snug text-primary">{c.name}</h3>
+            <p className="mt-1 font-mono text-[11px] text-muted-foreground">{c.issuer} · {c.date}</p>
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+            >
+              <Link to="/documents/$doc" params={{ doc: c.slug }}>
+                view document<ExternalLink aria-hidden="true" />
+              </Link>
+            </Button>
+          </article>
+        ))}
       </div>
       <p className="reveal mt-4 border-l-2 border-accent bg-secondary/30 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
         <span className="text-accent">IN PROGRESS /</span> {profile.certsInProgress}
       </p>
+      <div className="panel reveal mt-4 p-5 sm:p-6">
+        <p className="font-mono text-[10px] text-accent">CREDLY / VERIFIED DIGITAL BADGES</p>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {profile.credly.badges.map((b) => (
+            <li key={b} className="border border-border bg-secondary/40 px-2.5 py-1.5 font-mono text-[10px] text-foreground">
+              {b}
+            </li>
+          ))}
+        </ul>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+        >
+          <a href={profile.credly.url} target="_blank" rel="noopener noreferrer">
+            View All Credly Badges<ExternalLink aria-hidden="true" />
+          </a>
+        </Button>
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- letter of recommendation ---------- */
+
+export function Recommendation() {
+  const letter = profile.recommendationLetter;
+  return (
+    <Section id="recommendation" heading="cat recommendation.pdf">
+      <article className="panel reveal flex flex-col gap-4 p-5 shadow-terminal sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] text-accent">LETTER OF RECOMMENDATION · PDF</p>
+          <h3 className="mt-2 font-mono text-base text-primary">Recommendation for Andrew Vinston D&apos;Souza</h3>
+          <p className="mt-1 font-mono text-[11px] leading-relaxed text-muted-foreground">
+            Authored by <span className="text-foreground">{letter.author}</span> — {letter.role}, {letter.org}
+          </p>
+        </div>
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="h-11 shrink-0 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground"
+        >
+          <Link to="/documents/$doc" params={{ doc: letter.slug }}>
+            View Letter<ExternalLink aria-hidden="true" />
+          </Link>
+        </Button>
+      </article>
     </Section>
   );
 }
@@ -434,17 +478,7 @@ export function Testimonial() {
 /* ---------- contact ---------- */
 
 export function Contact() {
-  const [errors, setErrors] = useState<string[]>([]);
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
-  const send = useServerFn(submitContact);
-
-  useEffect(() => {
-    if (!sent) return;
-    const timeout = window.setTimeout(() => setSent(false), 5000);
-    return () => window.clearTimeout(timeout);
-  }, [sent]);
 
   const copyEmail = async () => {
     try {
@@ -453,38 +487,6 @@ export function Contact() {
       setTimeout(() => setCopied(false), 1800);
     } catch {
       /* clipboard unavailable */
-    }
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const honey = String(fd.get("company_url") ?? "");
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const message = String(fd.get("message") ?? "").trim();
-
-    const errs: string[] = [];
-    if (name.length < 2 || name.length > 80) errs.push("name must be 2–80 characters");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
-      errs.push("valid email required");
-    if (message.length < 10 || message.length > 1000) errs.push("message must be 10–1000 characters");
-    setErrors(errs);
-    setSent(false);
-    if (errs.length) return;
-
-    setSending(true);
-    try {
-      const result = await send({ data: { name, email, message, company_url: honey } });
-      if (!result.ok) throw new Error("Could not confirm receipt. Please email directly instead.");
-      if (!honey) setSent(true);
-      form.reset();
-      void trackClick("contact-form-submit");
-    } catch (err) {
-      setErrors([err instanceof Error ? err.message : "could not send message"]);
-    } finally {
-      setSending(false);
     }
   };
 
