@@ -6,4 +6,4 @@ Recruiters find a credible SOC candidate and offer them an internship or role.
 
 ## Metric
 
-Visitors who send a message through the contact form each month
+People who start an email to the candidate (mailto or copy-email click) each month
