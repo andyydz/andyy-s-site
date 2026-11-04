@@ -1,4 +1,4 @@
-# SOC Analyst Portfolio || Andrew "Andyy" D'Souz
+# SOC Analyst Portfolio || Andrew "Andyy" D'Souza
 
 ### Aspiring SOC Analyst | Threat Detection & Incident Response
 
@@ -34,7 +34,7 @@ Technologies below were used through TryHackMe practice, personal projects, cour
 | Vulnerability Assessment | Network Security |
 | Networking Fundamentals | Linux Fundamentals |
 | Web Application Security | |
-
+ 
 **Security Tools and Technologies**
 
 ![Splunk](https://img.shields.io/badge/-Splunk-000000?style=flat&logo=splunk&logoColor=white)
