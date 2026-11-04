@@ -483,6 +483,7 @@ export function Contact() {
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
+      trackClick("copy-email");
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
@@ -513,6 +514,7 @@ export function Contact() {
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                onClick={href.startsWith("mailto") ? () => trackClick("email") : undefined}
                 className="min-w-0 break-all text-primary hover:underline"
               >
                 {text}
