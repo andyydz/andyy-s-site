@@ -73,7 +73,7 @@ export function LogStrip() {
           type="button"
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
-          className="mt-3 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-150 hover:border-border-strong hover:text-foreground"
+          className="mt-3 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:text-foreground active:translate-y-px"
         >
           <span>{expanded ? "> collapse" : "> read more"}</span>
           <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
@@ -186,9 +186,15 @@ export function StatsBar() {
 export function About() {
   return (
     <Section id="about" heading="cat about.md">
-      <div className="reveal grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)]">
-        <p className="font-mono text-xs text-primary">01 / PROFILE</p>
-        <p className="max-w-4xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{profile.about}</p>
+      <div className="panel reveal shadow-terminal">
+        <div className="flex items-center justify-between border-b border-border px-4 py-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground sm:px-5">
+          <span>andyy@soc:~$ cat about.md</span>
+          <span className="status-dot" aria-hidden="true" />
+        </div>
+        <div className="px-4 py-5 sm:px-6 sm:py-6">
+          <p className="font-mono text-xs text-primary">01 / PROFILE</p>
+          <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{profile.about}</p>
+        </div>
       </div>
     </Section>
   );
@@ -217,7 +223,7 @@ export function Skills() {
               variant="ghost"
               aria-expanded={expanded.has(gi)}
               onClick={() => toggle(gi)}
-              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary hover:bg-secondary sm:text-sm"
+              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary transition-colors duration-200 hover:bg-secondary active:bg-secondary/80 sm:text-sm"
             >
               <span>
                 {String(gi + 1).padStart(2, "0")} / {group.name}{" "}
@@ -250,7 +256,7 @@ export function Skills() {
          variant="outline"
          onClick={() => setExpanded(allExpanded ? new Set() : new Set(profile.skillGroups.map((_, index) => index)))}
          aria-expanded={allExpanded}
-         className="reveal mt-5 h-11 rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+         className="reveal mt-5 h-11 rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-foreground active:translate-y-px"
       >
          <span>{allExpanded ? "> collapse all" : "> expand all"}</span>
          <ChevronDown aria-hidden="true" className={allExpanded ? "rotate-180" : ""} />
@@ -261,42 +267,59 @@ export function Skills() {
 
 /* ---------- projects ---------- */
 
+function CaseFile({ project: f, projectIndex }: { project: (typeof profile.featuredProjects)[number]; projectIndex: number }) {
+  // On mobile the four-part details start collapsed and expand on tap;
+  // desktop (sm+) always shows them expanded.
+  const [open, setOpen] = useState(false);
+  return (
+    <article
+      className="panel case-file reveal overflow-hidden transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+    >
+      <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] text-accent">
+            CASE FILE {String(projectIndex + 1).padStart(2, "0")} ·{" "}
+            {f.status ? f.status.toUpperCase() : "FEATURED"}
+          </p>
+          <h3 className="mt-2 font-mono text-base leading-snug text-primary sm:text-lg">{f.name}</h3>
+          <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground">{f.description}</p>
+        </div>
+        <Button asChild variant="outline" size="sm" className="h-11 shrink-0 justify-self-start rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary active:translate-y-px sm:justify-self-auto">
+          <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
+        </Button>
+      </header>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-11 w-full items-center justify-between px-5 py-2.5 font-mono text-[11px] tracking-wide text-primary transition-colors duration-200 hover:bg-secondary/60 active:bg-secondary sm:hidden"
+      >
+        <span>{open ? "> close case file" : "> open case file"}</span>
+        <ChevronDown aria-hidden="true" className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      <dl className={`grid gap-px bg-border sm:grid-cols-2 ${open ? "grid" : "hidden sm:grid"}`}>
+        {[
+          ["problem", f.problem],
+          ["approach", f.approach],
+          ["outcome", f.outcome],
+          ["what's next", f.next],
+        ].map(([k, v], i) => (
+          <div key={k} className="bg-card px-5 py-5 sm:px-6">
+            <dt className="font-mono text-[11px] uppercase text-accent">0{i + 1} / {k}</dt>
+            <dd className="mt-2 text-sm leading-6 text-muted-foreground">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+  );
+}
+
 export function Projects() {
   return (
     <Section id="projects" heading="ls projects/">
       <div className="grid gap-5">
         {profile.featuredProjects.map((f, projectIndex) => (
-          <article
-            key={f.name}
-            className="panel case-file reveal overflow-hidden transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
-          >
-            <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
-              <div className="min-w-0">
-                <p className="font-mono text-[10px] text-accent">
-                  CASE FILE {String(projectIndex + 1).padStart(2, "0")} ·{" "}
-                  {f.status ? f.status.toUpperCase() : "FEATURED"}
-                </p>
-                <h3 className="mt-2 font-mono text-base leading-snug text-primary sm:text-lg">{f.name}</h3>
-                <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground">{f.description}</p>
-              </div>
-              <Button asChild variant="outline" size="sm" className="h-10 shrink-0 justify-self-start rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary sm:justify-self-auto">
-                <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
-              </Button>
-            </header>
-            <dl className="grid gap-px bg-border sm:grid-cols-2">
-              {[
-                ["problem", f.problem],
-                ["approach", f.approach],
-                ["outcome", f.outcome],
-                ["what's next", f.next],
-              ].map(([k, v], i) => (
-                <div key={k} className="bg-card px-5 py-5 sm:px-6">
-                  <dt className="font-mono text-[11px] uppercase text-accent">0{i + 1} / {k}</dt>
-                  <dd className="mt-2 text-sm leading-6 text-muted-foreground">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </article>
+          <CaseFile key={f.name} project={f} projectIndex={projectIndex} />
         ))}
       </div>
 
@@ -348,7 +371,7 @@ export function Certifications() {
               asChild
               variant="outline"
               size="sm"
-              className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+              className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-foreground active:translate-y-px"
             >
               <Link to="/documents/$doc" params={{ doc: c.slug }}>
                 view document<ExternalLink aria-hidden="true" />
@@ -373,7 +396,7 @@ export function Certifications() {
           asChild
           variant="outline"
           size="sm"
-          className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+          className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-foreground active:translate-y-px"
         >
           <a href={profile.credly.url} target="_blank" rel="noopener noreferrer">
             View All Credly Badges<ExternalLink aria-hidden="true" />
@@ -402,7 +425,7 @@ export function Recommendation() {
           asChild
           variant="outline"
           size="sm"
-          className="h-11 shrink-0 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground"
+          className="h-11 shrink-0 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:bg-primary hover:text-primary-foreground active:translate-y-px"
         >
           <Link to="/documents/$doc" params={{ doc: letter.slug }}>
             View Letter<ExternalLink aria-hidden="true" />
@@ -460,18 +483,40 @@ export function Testimonial() {
   return (
     <Section id="testimonial" heading="cat testimonial.txt">
       <div className="grid max-w-4xl gap-4">
-        {testimonials.map((t) => (
-          <blockquote key={t.author} className="panel reveal p-5 shadow-terminal sm:p-6">
-            <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
-            <p className="mt-5 text-base leading-8 text-foreground italic sm:text-lg">“{t.quote}”</p>
-            <footer className="mt-5 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
-              <span className="text-primary">{t.author}</span><br />{t.role}
-              {"title" in t && <p className="mt-2">{t.title}</p>}
-            </footer>
-          </blockquote>
+        {testimonials.map((t, i) => (
+          <TestimonialCard key={t.author} testimonial={t} index={i} />
         ))}
       </div>
     </Section>
+  );
+}
+
+function TestimonialCard({ testimonial: t, index }: { testimonial: (typeof profile.testimonial | typeof profile.peerTestimonial); index: number }) {
+  // On mobile long quotes start clamped and expand on tap; desktop shows
+  // everything (hover lift stays unchanged).
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <blockquote
+      key={index}
+      className="panel reveal p-5 shadow-terminal transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong sm:p-6"
+    >
+      <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
+      <p className={`mt-5 text-base leading-8 text-foreground italic sm:text-lg ${expanded ? "" : "line-clamp-5 sm:line-clamp-none"}`}>
+        “{t.quote}”
+      </p>
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        className="mt-3 inline-flex min-h-11 items-center gap-1.5 font-mono text-[11px] text-primary transition-colors duration-200 hover:text-foreground"
+      >
+        {expanded ? "▾ collapse" : "▸ tap to expand"}
+      </button>
+      <footer className="mt-2 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
+        <span className="text-primary">{t.author}</span><br />{t.role}
+        {"title" in t && <p className="mt-2">{t.title}</p>}
+      </footer>
+    </blockquote>
   );
 }
 
@@ -527,7 +572,7 @@ export function Contact() {
                   onClick={copyEmail}
                   aria-label="Copy email address"
                   title="Copy email address"
-                  className="no-print h-11 w-11 rounded-sm border-border bg-transparent text-muted-foreground hover:border-border-strong hover:bg-secondary hover:text-primary"
+                  className="no-print h-11 w-11 rounded-sm border-border bg-transparent text-muted-foreground transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-primary active:translate-y-px"
                 >
                   {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
                 </Button>

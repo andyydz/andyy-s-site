@@ -19,3 +19,15 @@
 - [x] SEO/content consistency → meta/JSON-LD description now entry-level framing; everything else preserved
 - [x] Verified: build OK, Playwright desktop+mobile (no overflow, no console errors), PDF viewer + 404, QR decode, all repo/Credly links present
 - [x] Report delivered — no deploy/publish until user reviews
+
+## Phase 2 — final refinement (Nov 4, 2026 brief)
+
+- [x] About section → restored terminal-style panel frame (command header bar + bordered body), content unchanged
+- [x] Project case files → mobile tap-to-expand/collapse of the four-part details ("open/close case file"); desktop always expanded; repo button stays in header
+- [x] Testimonials → mobile tap-to-expand/collapse (quotes clamped to 5 lines until expanded); desktop unchanged
+- [x] PDF viewer → prominent "Open PDF" header button, fallback copy replaced with the approved "Having trouble viewing this document?" block; Download PDF preserved
+- [x] Micro-interactions → press feedback (active:translate-y-px) on cert/Credly/letter/copy/read-more/skill buttons; case-file hover 150→200ms; fixed `animate-fade-in` (was referenced by skill tags but never defined — now a real 260ms fade); document page content gets subtle fade-in
+- [x] Volunteering → added Gaming Volunteer — Aloysian Fest 2026 entry (assistance/observation wording preserved; CODESPRINT entry untouched)
+- [x] Content consistency → verified no outdated TryHackMe stats (Top 4% / 78-day streak / Nov 2, 2026 only); hero tagline unchanged (report-first rule)
+- [x] Resume → current /resume.pdf links preserved untouched; plan for dedicated view/download page noted in report for when the final PDF arrives
+- [ ] Publish/deploy — waiting on user approval

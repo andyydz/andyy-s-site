@@ -213,6 +213,17 @@ export const profile = {
 
   volunteering: [
     {
+      role: "Gaming Volunteer — Aloysian Fest 2026",
+      org: "St. Aloysius (Deemed to be University), Mangaluru",
+      period: "Aug 2026",
+      points: [
+        "Volunteered at Aloysian Fest 2026, supporting gaming-event operations and gaining practical exposure to network infrastructure.",
+        "Assisted with the streaming setup and observed network configuration and troubleshooting involving routers and switches.",
+        "Shadowed the System Administrator and gained exposure to server racks, patch panels and physical network cabling.",
+        "Performed basic Linux connectivity diagnostics, including IP and route checks.",
+      ],
+    },
+    {
       role: "Technical Volunteer",
       org: "CODESPRINT National-Level Hackathon, St. Aloysius",
       period: "Jan 2026",
