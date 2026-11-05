@@ -483,18 +483,40 @@ export function Testimonial() {
   return (
     <Section id="testimonial" heading="cat testimonial.txt">
       <div className="grid max-w-4xl gap-4">
-        {testimonials.map((t) => (
-          <blockquote key={t.author} className="panel reveal p-5 shadow-terminal sm:p-6">
-            <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
-            <p className="mt-5 text-base leading-8 text-foreground italic sm:text-lg">“{t.quote}”</p>
-            <footer className="mt-5 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
-              <span className="text-primary">{t.author}</span><br />{t.role}
-              {"title" in t && <p className="mt-2">{t.title}</p>}
-            </footer>
-          </blockquote>
+        {testimonials.map((t, i) => (
+          <TestimonialCard key={t.author} testimonial={t} index={i} />
         ))}
       </div>
     </Section>
+  );
+}
+
+function TestimonialCard({ testimonial: t, index }: { testimonial: (typeof profile.testimonial | typeof profile.peerTestimonial); index: number }) {
+  // On mobile long quotes start clamped and expand on tap; desktop shows
+  // everything (hover lift stays unchanged).
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <blockquote
+      key={index}
+      className="panel reveal p-5 shadow-terminal transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong sm:p-6"
+    >
+      <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
+      <p className={`mt-5 text-base leading-8 text-foreground italic sm:text-lg ${expanded ? "" : "line-clamp-5 sm:line-clamp-none"}`}>
+        “{t.quote}”
+      </p>
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        className="mt-3 inline-flex min-h-11 items-center gap-1.5 font-mono text-[11px] text-primary transition-colors duration-200 hover:text-foreground"
+      >
+        {expanded ? "▾ collapse" : "▸ tap to expand"}
+      </button>
+      <footer className="mt-2 border-t border-border pt-4 font-mono text-[11px] leading-relaxed text-muted-foreground">
+        <span className="text-primary">{t.author}</span><br />{t.role}
+        {"title" in t && <p className="mt-2">{t.title}</p>}
+      </footer>
+    </blockquote>
   );
 }
 
