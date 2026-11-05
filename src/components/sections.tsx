@@ -186,9 +186,15 @@ export function StatsBar() {
 export function About() {
   return (
     <Section id="about" heading="cat about.md">
-      <div className="reveal grid gap-4 lg:grid-cols-[auto_minmax(0,1fr)]">
-        <p className="font-mono text-xs text-primary">01 / PROFILE</p>
-        <p className="max-w-4xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{profile.about}</p>
+      <div className="panel reveal shadow-terminal">
+        <div className="flex items-center justify-between border-b border-border px-4 py-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground sm:px-5">
+          <span>andyy@soc:~$ cat about.md</span>
+          <span className="status-dot" aria-hidden="true" />
+        </div>
+        <div className="px-4 py-5 sm:px-6 sm:py-6">
+          <p className="font-mono text-xs text-primary">01 / PROFILE</p>
+          <p className="mt-3 max-w-4xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">{profile.about}</p>
+        </div>
       </div>
     </Section>
   );
