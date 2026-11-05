@@ -73,7 +73,7 @@ export function LogStrip() {
           type="button"
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
-          className="mt-3 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-150 hover:border-border-strong hover:text-foreground"
+          className="mt-3 inline-flex items-center gap-2 border border-border px-4 py-2 font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:text-foreground active:translate-y-px"
         >
           <span>{expanded ? "> collapse" : "> read more"}</span>
           <span className="text-muted-foreground">{expanded ? "−" : "+"}</span>
@@ -223,7 +223,7 @@ export function Skills() {
               variant="ghost"
               aria-expanded={expanded.has(gi)}
               onClick={() => toggle(gi)}
-              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary hover:bg-secondary sm:text-sm"
+              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary transition-colors duration-200 hover:bg-secondary active:bg-secondary/80 sm:text-sm"
             >
               <span>
                 {String(gi + 1).padStart(2, "0")} / {group.name}{" "}
@@ -256,7 +256,7 @@ export function Skills() {
          variant="outline"
          onClick={() => setExpanded(allExpanded ? new Set() : new Set(profile.skillGroups.map((_, index) => index)))}
          aria-expanded={allExpanded}
-         className="reveal mt-5 h-11 rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+         className="reveal mt-5 h-11 rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-foreground active:translate-y-px"
       >
          <span>{allExpanded ? "> collapse all" : "> expand all"}</span>
          <ChevronDown aria-hidden="true" className={allExpanded ? "rotate-180" : ""} />
@@ -371,7 +371,7 @@ export function Certifications() {
               asChild
               variant="outline"
               size="sm"
-              className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+              className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-foreground active:translate-y-px"
             >
               <Link to="/documents/$doc" params={{ doc: c.slug }}>
                 view document<ExternalLink aria-hidden="true" />
@@ -396,7 +396,7 @@ export function Certifications() {
           asChild
           variant="outline"
           size="sm"
-          className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary hover:border-border-strong hover:bg-secondary hover:text-foreground"
+          className="mt-4 h-11 w-fit rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-foreground active:translate-y-px"
         >
           <a href={profile.credly.url} target="_blank" rel="noopener noreferrer">
             View All Credly Badges<ExternalLink aria-hidden="true" />
@@ -425,7 +425,7 @@ export function Recommendation() {
           asChild
           variant="outline"
           size="sm"
-          className="h-11 shrink-0 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground"
+          className="h-11 shrink-0 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:bg-primary hover:text-primary-foreground active:translate-y-px"
         >
           <Link to="/documents/$doc" params={{ doc: letter.slug }}>
             View Letter<ExternalLink aria-hidden="true" />
@@ -572,7 +572,7 @@ export function Contact() {
                   onClick={copyEmail}
                   aria-label="Copy email address"
                   title="Copy email address"
-                  className="no-print h-11 w-11 rounded-sm border-border bg-transparent text-muted-foreground hover:border-border-strong hover:bg-secondary hover:text-primary"
+                  className="no-print h-11 w-11 rounded-sm border-border bg-transparent text-muted-foreground transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-primary active:translate-y-px"
                 >
                   {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
                 </Button>
