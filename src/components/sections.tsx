@@ -267,6 +267,53 @@ export function Skills() {
 
 /* ---------- projects ---------- */
 
+function CaseFile({ project: f, projectIndex }: { project: (typeof profile.featuredProjects)[number]; projectIndex: number }) {
+  // On mobile the four-part details start collapsed and expand on tap;
+  // desktop (sm+) always shows them expanded.
+  const [open, setOpen] = useState(false);
+  return (
+    <article
+      className="panel case-file reveal overflow-hidden transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+    >
+      <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] text-accent">
+            CASE FILE {String(projectIndex + 1).padStart(2, "0")} ·{" "}
+            {f.status ? f.status.toUpperCase() : "FEATURED"}
+          </p>
+          <h3 className="mt-2 font-mono text-base leading-snug text-primary sm:text-lg">{f.name}</h3>
+          <p className="mt-1 max-w-3xl text-xs leading-relaxed text-muted-foreground">{f.description}</p>
+        </div>
+        <Button asChild variant="outline" size="sm" className="h-11 shrink-0 justify-self-start rounded-sm border-border bg-background font-mono text-[10px] text-muted-foreground hover:text-primary active:translate-y-px sm:justify-self-auto">
+          <a href={f.repo} target="_blank" rel="noreferrer noopener">Repository<ExternalLink aria-hidden="true" /></a>
+        </Button>
+      </header>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex min-h-11 w-full items-center justify-between px-5 py-2.5 font-mono text-[11px] tracking-wide text-primary transition-colors duration-200 hover:bg-secondary/60 active:bg-secondary sm:hidden"
+      >
+        <span>{open ? "> close case file" : "> open case file"}</span>
+        <ChevronDown aria-hidden="true" className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      <dl className={`grid gap-px bg-border sm:grid-cols-2 ${open ? "grid" : "hidden sm:grid"}`}>
+        {[
+          ["problem", f.problem],
+          ["approach", f.approach],
+          ["outcome", f.outcome],
+          ["what's next", f.next],
+        ].map(([k, v], i) => (
+          <div key={k} className="bg-card px-5 py-5 sm:px-6">
+            <dt className="font-mono text-[11px] uppercase text-accent">0{i + 1} / {k}</dt>
+            <dd className="mt-2 text-sm leading-6 text-muted-foreground">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </article>
+  );
+}
+
 export function Projects() {
   return (
     <Section id="projects" heading="ls projects/">
