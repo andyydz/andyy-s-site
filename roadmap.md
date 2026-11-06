@@ -31,3 +31,15 @@
 - [x] Content consistency → verified no outdated TryHackMe stats (Top 4% / 78-day streak / Nov 2, 2026 only); hero tagline unchanged (report-first rule)
 - [x] Resume → current /resume.pdf links preserved untouched; plan for dedicated view/download page noted in report for when the final PDF arrives
 - [ ] Publish/deploy — waiting on user approval
+
+## Final controlled refinement (Nov 6, 2026 brief)
+
+- [ ] Confirmed repository authorization with user; inspect all source files, public README destinations, and uploaded resume/logo
+- [ ] Update entry-level SOC L1 positioning and factual About summary
+- [ ] Fix skill group text contrast in hover/focus/active states; unify comparable card and touch feedback
+- [ ] Promote five main projects, link Sentinel to its real documentation, and place two supporting projects behind a toggle
+- [ ] Add the uploaded resume to the existing document viewer; route all resume links there
+- [ ] Use the uploaded cat logo in navigation and refresh favicon
+- [ ] Make mobile document view a clear PDF fallback instead of a blank embedded frame
+- [ ] Verify project links, document routes, UI interactions, responsive widths, typecheck/build/lint; report only checks run
+- [ ] Publish/deploy — waiting on explicit user approval
