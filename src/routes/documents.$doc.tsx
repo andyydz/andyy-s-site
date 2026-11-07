@@ -17,6 +17,18 @@ export const Route = createFileRoute("/documents/$doc")({
           loaderData?.description ??
           "Certificate and recommendation documents from Andrew Vinston D'Souza's cybersecurity portfolio.",
       },
+      { property: "og:title", content: loaderData ? `${loaderData.title} — andyy dz` : "Portfolio document — andyy dz" },
+      {
+        property: "og:description",
+        content: loaderData?.description ?? "A document from Andrew Vinston D'Souza's cybersecurity portfolio.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: loaderData ? `${loaderData.title} — andyy dz` : "Portfolio document — andyy dz" },
+      {
+        name: "twitter:description",
+        content: loaderData?.description ?? "A document from Andrew Vinston D'Souza's cybersecurity portfolio.",
+      },
     ],
   }),
   component: DocumentViewer,
@@ -58,9 +70,15 @@ function DocumentViewer() {
       </header>
 
       <main className="flex-1 px-3 py-4 sm:px-6">
-        <div className="mx-auto h-[calc(100dvh-11rem)] max-w-5xl border border-border bg-card shadow-terminal animate-fade-in">
+        <div className="mx-auto hidden h-[calc(100dvh-11rem)] max-w-5xl border border-border bg-card shadow-terminal animate-fade-in sm:block">
           <iframe src={doc.file} title={doc.title} className="h-full w-full" />
         </div>
+        <aside className="mx-auto max-w-5xl border border-border bg-card px-4 py-5 sm:hidden">
+          <p className="font-mono text-xs text-accent">PDF PREVIEW</p>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Embedded PDF preview is not available on this screen. Open the PDF in your browser or download it using the controls above.
+          </p>
+        </aside>
         <aside className="mx-auto mt-3 max-w-5xl border border-border bg-card px-4 py-4 sm:px-5">
           <p className="font-mono text-xs tracking-wide text-accent">HAVING TROUBLE VIEWING THIS DOCUMENT?</p>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">

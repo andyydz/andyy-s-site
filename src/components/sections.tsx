@@ -223,7 +223,7 @@ export function Skills() {
               variant="ghost"
               aria-expanded={expanded.has(gi)}
               onClick={() => toggle(gi)}
-              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary transition-colors duration-200 hover:bg-secondary active:bg-secondary/80 sm:text-sm"
+              className="h-auto min-h-12 w-full justify-between rounded-none px-4 py-3 font-mono text-xs text-primary transition-colors duration-200 hover:bg-secondary hover:text-primary focus-visible:text-primary active:bg-secondary/80 active:text-primary sm:text-sm"
             >
               <span>
                 {String(gi + 1).padStart(2, "0")} / {group.name}{" "}
@@ -236,7 +236,7 @@ export function Skills() {
                 {group.items.map((item, i) => (
                   <li
                     key={item}
-                    className="animate-fade-in border border-border bg-card px-3 py-1.5 font-mono text-[11px] text-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary"
+                    className="animate-fade-in border border-border bg-card px-3 py-1.5 font-mono text-[11px] text-foreground transition-colors duration-150 hover:border-border-strong hover:text-primary focus-visible:border-border-strong focus-visible:text-primary active:text-primary"
                     style={{
                       animationDelay: `${i * 60}ms`,
                       animationFillMode: "backwards",
@@ -273,7 +273,7 @@ function CaseFile({ project: f, projectIndex }: { project: (typeof profile.featu
   const [open, setOpen] = useState(false);
   return (
     <article
-      className="panel case-file reveal overflow-hidden transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+      className="panel case-file reveal overflow-hidden transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-terminal active:translate-y-px"
     >
       <header className="grid items-start gap-4 border-b border-border bg-secondary/40 px-5 py-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:px-6">
         <div className="min-w-0">
@@ -315,6 +315,7 @@ function CaseFile({ project: f, projectIndex }: { project: (typeof profile.featu
 }
 
 export function Projects() {
+  const [showAdditional, setShowAdditional] = useState(false);
   return (
     <Section id="projects" heading="ls projects/">
       <div className="grid gap-5">
@@ -323,12 +324,11 @@ export function Projects() {
         ))}
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-
+      {showAdditional && <div id="additional-projects" className="mt-5 grid gap-4 md:grid-cols-2">
         {profile.projects.map((p, i) => (
           <article
             key={p.name}
-            className="panel reveal flex flex-col p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong sm:p-6"
+            className="panel reveal flex flex-col p-5 transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-terminal active:translate-y-px sm:p-6"
             style={delay(i)}
           >
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
@@ -347,7 +347,18 @@ export function Projects() {
             </ul>
           </article>
         ))}
-      </div>
+      </div>}
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => setShowAdditional((visible) => !visible)}
+        aria-expanded={showAdditional}
+        aria-controls="additional-projects"
+        className="mt-5 h-11 rounded-sm border-border bg-transparent font-mono text-xs text-primary transition-colors duration-200 hover:border-border-strong hover:bg-secondary hover:text-primary active:translate-y-px"
+      >
+        <span>{showAdditional ? "> show fewer projects" : "> view more projects"}</span>
+        <ChevronDown aria-hidden="true" className={`transition-transform duration-200 ${showAdditional ? "rotate-180" : ""}`} />
+      </Button>
     </Section>
   );
 }
@@ -361,7 +372,7 @@ export function Certifications() {
         {profile.certifications.map((c, i) => (
           <article
             key={c.slug}
-            className="panel reveal flex flex-col p-5 transition-[transform,border-color] duration-150 ease-out hover:-translate-y-0.5 hover:border-border-strong"
+            className="panel reveal flex flex-col p-5 transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-terminal active:translate-y-px"
             style={delay(i)}
           >
             <p className="font-mono text-[10px] text-accent">CREDENTIAL {String(i + 1).padStart(2, "0")} · VERIFIED</p>
@@ -383,11 +394,11 @@ export function Certifications() {
       <p className="reveal mt-4 border-l-2 border-accent bg-secondary/30 px-4 py-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
         <span className="text-accent">IN PROGRESS /</span> {profile.certsInProgress}
       </p>
-      <div className="panel reveal mt-4 p-5 sm:p-6">
+      <div className="panel reveal mt-4 p-5 transition-[border-color,box-shadow] duration-200 hover:border-border-strong hover:shadow-terminal sm:p-6">
         <p className="font-mono text-[10px] text-accent">CREDLY / VERIFIED DIGITAL BADGES</p>
         <ul className="mt-3 flex flex-wrap gap-2">
           {profile.credly.badges.map((b) => (
-            <li key={b} className="border border-border bg-secondary/40 px-2.5 py-1.5 font-mono text-[10px] text-foreground">
+            <li key={b} className="border border-border bg-secondary/40 px-2.5 py-1.5 font-mono text-[10px] text-foreground transition-colors duration-200 hover:border-border-strong">
               {b}
             </li>
           ))}
@@ -413,7 +424,7 @@ export function Recommendation() {
   const letter = profile.recommendationLetter;
   return (
     <Section id="recommendation" heading="cat recommendation.pdf">
-      <article className="panel reveal flex flex-col gap-4 p-5 shadow-terminal sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        className="panel reveal flex flex-col gap-4 p-5 shadow-terminal transition-[transform,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:shadow-terminal active:translate-y-px sm:flex-row sm:items-center sm:justify-between sm:p-6"
         <div className="min-w-0">
           <p className="font-mono text-[10px] text-accent">LETTER OF RECOMMENDATION · PDF</p>
           <h3 className="mt-2 font-mono text-base text-primary">Recommendation for Andrew Vinston D&apos;Souza</h3>
@@ -498,7 +509,7 @@ function TestimonialCard({ testimonial: t, index }: { testimonial: (typeof profi
   return (
     <blockquote
       key={index}
-      className="panel reveal p-5 shadow-terminal transition-[transform,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong sm:p-6"
+      className="panel reveal p-5 shadow-terminal transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:border-border-strong hover:shadow-terminal active:translate-y-px sm:p-6"
     >
       <p className="font-mono text-xs text-primary">RECOMMENDATION / VERIFIED ATTRIBUTION</p>
       <p className={`mt-5 text-base leading-8 text-foreground italic sm:text-lg ${expanded ? "" : "line-clamp-5 sm:line-clamp-none"}`}>
