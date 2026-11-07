@@ -31,7 +31,7 @@ export function Hero() {
 
           <div className="no-print mt-8 grid grid-cols-2 gap-3 font-mono text-xs sm:flex sm:flex-wrap sm:text-sm">
             <Button asChild className="h-11 rounded-sm font-mono text-xs active:translate-y-px sm:text-sm">
-              <a href={profile.links.resume} onClick={() => trackClick("resume")}><Download aria-hidden="true" />Download Resume</a>
+              <a href={profile.links.resume} onClick={() => trackClick("resume")}><Download aria-hidden="true" />View Resume</a>
             </Button>
             <Button asChild variant="outline" className="h-11 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground active:translate-y-px sm:text-sm">
               <a href="#contact" onClick={() => trackClick("contact")}><Mail aria-hidden="true" />Contact</a>

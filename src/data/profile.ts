@@ -5,17 +5,18 @@ export const profile = {
   name: "Andrew Vinston D'Souza",
   alias: "Andyy",
   handle: "andyydz",
-  title: "Aspiring SOC Analyst | Threat Detection & Incident Response",
-  subtitle: "Top 4% on TryHackMe · BCA @ St. Aloysius University, Mangaluru",
+  title: "SOC Analyst (L1) | Cybersecurity & Blue Team",
+  subtitle:
+    "Entry-level candidate with foundational lab practice in security monitoring, alert analysis, Linux and networking, Wazuh detection validation, Python alert parsing, and evidence documentation.",
   email: "andyydz57@gmail.com",
   links: {
     github: "https://github.com/andyydz",
     linkedin: "https://www.linkedin.com/in/andrew-vinston-d-souza-41699330a/",
     tryhackme: "https://tryhackme.com/p/andyydz57",
     reddit: "https://www.reddit.com/user/RavenGhost6767/",
-    resume: "/resume.pdf",
+    resume: "/documents/resume",
   },
-  about: `Curious about how systems work since I was a kid — that curiosity pointed itself at cybersecurity, specifically defense. I care about understanding why something breaks, not just patching it and moving on. Most days I'm in TryHackMe's SOC and Blue Team paths — log analysis, incident response sims, Splunk, Wireshark, Nmap — mapping attack behavior to MITRE ATT&CK and writing it up on GitHub as I go. Top 4% globally on TryHackMe with a 78-day highest streak (last updated November 2, 2026). Looking for an internship or entry-level SOC Analyst role.`,
+  about: `I'm a final-year BCA student pursuing entry-level SOC Analyst (L1) opportunities. My experience is self-directed and lab-based: I practice security monitoring and alert analysis with Wazuh, validate File Integrity Monitoring and detection rules in controlled tests, and document investigation evidence. I also built a Python tool for processing exported Wazuh alert data. My foundations include Linux and networking, with continued SIEM and blue-team learning through TryHackMe. I have not worked in a production SOC.`,
 
   // Manual — TryHackMe has no stable public API. Last checked November 2, 2026.
   stats: [
@@ -103,31 +104,31 @@ export const profile = {
   featuredProjects: [
     {
       name: "Sentinel SOC Lab",
-      repo: "https://github.com/andyydz/SOC-Portfolio",
+      repo: "https://github.com/andyydz/sentinel-soc-lab",
       status: "In Progress",
       description:
-        "An evidence-driven Security Operations Center lab built around Wazuh, Linux endpoints, File Integrity Monitoring, detection engineering, and security-event investigation.",
+        "A controlled virtual SOC lab using Wazuh, an Ubuntu endpoint, Kali Linux, and an isolated VirtualBox network to practice and document detection engineering and investigation.",
       problem:
-        "Building practical SOC investigation skills requires more than collecting alerts. Detection behavior must be tested, supporting evidence reviewed, and limitations documented.",
+        "A detection rule should be evaluated with controlled tests and evidence, while unresolved findings and project limitations remain explicit.",
       approach:
-        "Built an isolated Wazuh-based lab with a Linux endpoint. Configured File Integrity Monitoring and conducted controlled file-activity tests. Reviewed manager alerts, endpoint activity, and supporting logs while documenting investigation evidence in CASE-001.",
+        "Established Wazuh manager-to-agent communication and configured real-time File Integrity Monitoring for /home on the Ubuntu endpoint. Documented controlled file-lifecycle tests, detection observations, and CASE-001 evidence.",
       outcome:
-        "Established Wazuh manager-to-agent communication and validated file-integrity monitoring. Documented modification, creation, and deletion observations. During CASE-001 validation, built-in Wazuh rules detected file creation and deletion, while custom rule 100002 did not trigger for those events. The findings identified detection coverage requiring further engineering and retesting.",
-      next: "Improve custom detection coverage, add repeatable regression tests, develop additional investigation cases, document response workflows, and measure detection effectiveness. Later phases will explore broader attack scenarios and purple-team validation.",
+        "In one controlled lifecycle session on November 2, custom rules 100003 (creation), 100002 (modification), and 100004 (deletion) each appeared at Level 8. Earlier creation/deletion observations differ; the cause is unresolved. CASE-001 remains open, and these results do not establish comprehensive FIM coverage or repeatability.",
+      next: "Improve detection coverage, add repeatable validation, develop investigation cases, document response workflows, and measure effectiveness. Broader scenarios and purple-team validation remain future work.",
     },
     {
       name: "Python SOC Automation Engine",
       repo: "https://github.com/andyydz/python-soc-automation",
       status: "In Development",
       description:
-        "A Python-based security automation project that parses and validates Wazuh alerts, extracts key detection metadata, and establishes a foundation for explainable SOC triage and structured reporting.",
+        "A Python tool that processes exported Wazuh JSON alert files into structured, investigation-ready records; it has no live Wazuh manager or API integration.",
       problem:
-        "Wazuh alerts contain structured and sometimes nested JSON data. Analysts and automation scripts need a consistent way to validate and extract the information required for further investigation.",
+        "Exported Wazuh alerts can contain nested fields, inconsistent or missing data, and timestamps that need validation before downstream use.",
       approach:
-        "Developed an initial Python alert parser that validates incoming alert structures and extracts rule IDs, severity levels, agent information, and rule descriptions. Added handling for missing fields and an automated pytest test suite.",
+        "Implemented JSON ingestion, alert parsing and structural validation, UTC timestamp normalization, and investigation-record generation. Optional processing includes rule metadata, severity context, MITRE lookup, data-quality checks, and SHA-256 input-file integrity metadata.",
       outcome:
-        "Implemented the initial Wazuh alert parser, input-structure validation, default handling for missing data, and six parser test cases documented in the repository.",
-      next: "Expand parser coverage with additional edge cases, improve data normalization, introduce explainable alert-prioritization logic, and develop structured investigation reporting. Explore integration with exported Wazuh alerts as the project matures.",
+        "The repository documents automated tests across parsing, validation, ingestion, normalization, enrichment, investigation generation, pipeline integration, and CLI behavior. The investigation record does not invent evidence, conclusions, or asset details.",
+      next: "Improve operational logging and error reporting, and develop case-status and evidence management. Any future SENTINEL integration remains unimplemented.",
     },
     {
       name: "Security Incident & Asset Tracker",
@@ -152,10 +153,24 @@ export const profile = {
       problem:
         "A banking-style network requires logical separation of departments and services to reduce unnecessary communication and support controlled network access.",
       approach:
-        "Designed a Cisco Packet Tracer topology with separate VLANs for ADMIN, EMPLOYEE, ATM, and SERVER segments. Configured routing and planned access-control restrictions between network segments.",
+        "Designed four VLANs and router-on-a-stick inter-VLAN routing in Cisco Packet Tracer, with centralized DHCP/DNS configuration and ACL restrictions for selected traffic. Documented tests include an Employee-to-Admin blocked ping and an increasing ACL deny counter.",
       outcome:
-        "Created a segmented network topology with separate logical network areas and supporting server infrastructure in Packet Tracer.",
-      next: "Complete and verify access-control policies, perform inter-VLAN connectivity and isolation tests, document the results, and improve network-security validation.",
+        "The topology, routing, services, and selected ACLs are documented. Employee-to-Admin blocking has documented test evidence; ATM ACL restrictions remain untested, and several DHCP, DNS, and service paths have no end-to-end verification.",
+      next: "Test the remaining ATM restrictions and unverified connectivity paths, then document evidence for each result.",
+    },
+    {
+      name: "SOC Portfolio",
+      repo: "https://github.com/andyydz/SOC-Portfolio",
+      status: "Learning Portfolio",
+      description:
+        "A repository documenting hands-on SOC learning and practical projects, including Wazuh, Splunk, ELK, Windows event analysis, and blue-team investigations.",
+      problem:
+        "SOC learning benefits from a traceable record of practical exercises, investigations, and project evidence.",
+      approach:
+        "Organized project work and learning documentation across security monitoring, incident investigations, detection engineering, and security tools.",
+      outcome:
+        "The repository contains separate write-ups and project areas; it is a learning portfolio rather than evidence of production SOC employment.",
+      next: "Continue adding hands-on exercises and investigation write-ups as they are completed and supported by evidence.",
     },
   ],
 

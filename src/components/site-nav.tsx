@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FileDown, Menu, X } from "lucide-react";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/andyy-cat-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 
 const SECTIONS = [
@@ -81,7 +81,7 @@ export function SiteNav() {
         </ul>
 
         <Button asChild variant="outline" className="hidden h-11 rounded-sm border-border-strong bg-transparent font-mono text-xs text-primary hover:bg-primary hover:text-primary-foreground md:inline-flex">
-          <a href="/resume.pdf"><FileDown aria-hidden="true" />resume.pdf</a>
+          <a href="/documents/resume"><FileDown aria-hidden="true" />resume.pdf</a>
         </Button>
 
         <Button
@@ -112,7 +112,7 @@ export function SiteNav() {
             </li>
           ))}
           <li>
-            <a href="/resume.pdf" className="flex min-h-11 items-center text-primary">
+            <a href="/documents/resume" className="flex min-h-11 items-center text-primary">
               &gt; resume.pdf
             </a>
           </li>
