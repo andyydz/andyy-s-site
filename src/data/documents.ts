@@ -1,6 +1,7 @@
 // Registry of viewable documents (certificates, letters).
 // Files live in public/documents/ — served statically, so the viewer and the
 // download button always reference the exact same PDF.
+import resumeAsset from "@/assets/andrew-vinston-dsouza-resume.pdf.asset.json";
 
 export type PortfolioDocument = {
   title: string;
@@ -13,6 +14,16 @@ export type PortfolioDocument = {
 };
 
 export const documents: Record<string, PortfolioDocument> = {
+  resume: {
+    title: "Andrew Vinston D'Souza — Resume",
+    issuer: "SOC Analyst (L1) · Cybersecurity & Blue Team",
+    description:
+      "Resume of Andrew Vinston D'Souza, an entry-level SOC Analyst candidate with foundational blue-team and cybersecurity lab practice.",
+    file: resumeAsset.url,
+    downloadName: "Andrew_Vinston_D_Souza_Resume.pdf",
+    backTo: "/",
+    backLabel: "back to portfolio",
+  },
   "pre-security": {
     title: "Pre Security — Learning Path Certificate",
     issuer: "TryHackMe",

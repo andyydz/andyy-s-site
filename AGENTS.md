@@ -9,3 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - SOC visualization lives in its own component, labeled as simulation; uses SVG + CSS 3D, no WebGL deps — keeps bundle small and claims truthful.
+- Reuse the parameterized document viewer for resume and portfolio PDFs so viewing/downloading point to the same source file.

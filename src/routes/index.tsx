@@ -23,9 +23,9 @@ import { profile } from "@/data/profile";
 
 const SITE_URL = "https://andyy-s-site.vercel.app";
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-const TITLE = "Andrew D'Souza — SOC Analyst Portfolio | Threat Detection";
+const TITLE = "Andrew D'Souza — SOC Analyst (L1) Portfolio | Cybersecurity & Blue Team";
 const DESCRIPTION =
-  "Entry-level cybersecurity portfolio of Andrew Vinston D'Souza (Andyy): SOC learning labs and projects in threat detection, incident response, Splunk, Wireshark and MITRE ATT&CK.";
+  "Entry-level SOC Analyst (L1) portfolio of Andrew Vinston D'Souza: foundational security monitoring, Wazuh detection validation, incident investigation practice, Linux, networking, and Python alert parsing.";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/")({
           "@type": "Person",
           name: profile.name,
           alternateName: profile.alias,
-          jobTitle: "Aspiring SOC Analyst",
+          jobTitle: "SOC Analyst (L1) candidate",
           email: `mailto:${profile.email}`,
           description: DESCRIPTION,
           url: `${SITE_URL}/`,
